@@ -25,6 +25,12 @@ public class Review extends Timestamped{
     private int star;
 
 
+    public Review(String descript,int star){
+        this.descript = descript;
+        this.star = star;
+    }
+
+
     //멤버 관계 추가
     //포스트 관계 추가
     //업데이트
