@@ -3,8 +3,6 @@ package com.sparta.airbnb_clone.configuration;
 import com.sparta.airbnb_clone.jwt.JwtFilter;
 import com.sparta.airbnb_clone.jwt.TokenProvider;
 import com.sparta.airbnb_clone.service.UserDetailsServiceImpl;
-import com.sparta.airbnb_clone.jwt.JwtFilter;
-import com.sparta.airbnb_clone.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
