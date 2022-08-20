@@ -25,6 +25,8 @@ public class ReviewService {
         }
         Review review = new Review(requestDto.getDescription(),requestDto.getStar());
 
+        reviewRepository.save(review);
+
         return ResponseDto.success(review);
     }
 }
