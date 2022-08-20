@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class CommentResponseDto {
+public class ReviewResponseDto {
     private Long commentId;
     private String description;
     private int star;

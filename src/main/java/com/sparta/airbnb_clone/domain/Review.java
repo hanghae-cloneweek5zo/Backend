@@ -8,15 +8,15 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "comment")
+@Table(name = "review")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment extends Timestamped{
+public class Review extends Timestamped{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentId;
+    private Long reviewId;
 
     @Column(nullable = false)
     private String descript;
