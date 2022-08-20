@@ -19,14 +19,17 @@ public class Review extends Timestamped{
     private Long reviewId;
 
     @Column(nullable = false)
-    private String descript;
+    private String description;
 
     @Column(nullable = false)
     private int star;
 
+    @Column(nullable = false)
+    private double starAvg;
 
-    public Review(String descript,int star){
-        this.descript = descript;
+
+    public Review(String description,int star){
+        this.description = description;
         this.star = star;
     }
 
