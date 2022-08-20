@@ -21,28 +21,23 @@ public class MemberController {
 
   private final MemberService memberService;
 
-  @PostMapping("/validate/email")
-  public ResponseDto<?> validateEmail(@RequestBody MemberRequestDto requestDto) {
-    return memberService.isvalidateEmail(requestDto) ?
-            ResponseDto.success(
-                    MemberResponseDto.builder()
-                            .valid(memberService.isvalidateEmail(requestDto))
-                            .msg("사용할 수 있는 이메일입니다.")
-                            .build()
-            ) :
-            ResponseDto.fail("NICKNAME_DUPLICATED", "중복되는 이메일 입니다.");
+  @PostMapping("/isvalidate/email")
+  public boolean isvalidateEmail(@RequestBody MemberRequestDto requestDto) {
+    return memberService.isvalidateEmail(requestDto);
+//            ?
+//            ResponseDto.success(
+//                    MemberResponseDto.builder()
+//                            .valid(memberService.isvalidateEmail(requestDto))
+//                            .msg("사용할 수 있는 이메일입니다.")
+//                            .build()
+//            ) :
+//            ResponseDto.fail("NICKNAME_DUPLICATED", "중복되는 이메일 입니다.");
+//
   }
 
-  @PostMapping("/validate/nickname")
-  public ResponseDto<?> validateNickname(@RequestBody MemberRequestDto requestDto) {
-    return memberService.isvalidateNickname(requestDto) ?
-            ResponseDto.success(
-                    MemberResponseDto.builder()
-                            .valid(memberService.isvalidateNickname(requestDto))
-                            .msg("사용할 수 있는 닉네임입니다.")
-                            .build()
-            ) :
-            ResponseDto.fail("NICKNAME_DUPLICATED", "중복되는 닉네임 입니다.");
+  @PostMapping("/isvalidate/nickname")
+  public boolean validateNickname(@RequestBody MemberRequestDto requestDto) {
+    return memberService.isvalidateNickname(requestDto);
   }
 
   @PostMapping("/signup")
