@@ -1,18 +1,20 @@
 package com.sparta.airbnb_clone.domain;
 
 
+import com.sparta.airbnb_clone.repository.ReviewRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "review")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Review extends Timestamped{
+public class Review extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,23 +29,30 @@ public class Review extends Timestamped{
     private House house;
 
     @Column(nullable = false)
-    private String description;
+    private String descript;
 
     @Column(nullable = false)
     private int star;
 
-    @Column(nullable = false)
-    private double starAvg;
+    @JoinColumn(name = "house_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private House house;
 
+    @JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
 
-    public Review(String description,int star){
-        this.description = description;
+    public Review(String descript, int star) {
+        this.descript = descript;
         this.star = star;
     }
 
+    public Review(String descript, int star, House house, Member member) {
+        this.descript = descript;
+        this.star = star;
+        this.house = house;
+        this.member = member;
+    }
 
-    //멤버 관계 추가
-    //포스트 관계 추가
-    //업데이트
 
 }
