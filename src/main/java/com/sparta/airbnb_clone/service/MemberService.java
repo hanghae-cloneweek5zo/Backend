@@ -113,8 +113,6 @@ public class MemberService {
 //    return ResponseDto.success("success");
 //  }
 
-
-
   public boolean isvalidateEmail(MemberRequestDto requestDto) {
     return isPresentEmail(requestDto.getEmail()) == null ? true : false;
   }

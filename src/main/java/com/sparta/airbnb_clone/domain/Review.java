@@ -20,6 +20,14 @@ public class Review extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
+    @JoinColumn(name = "member_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
+
+    @JoinColumn(name = "house_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private House house;
+
     @Column(nullable = false)
     private String descript;
 
