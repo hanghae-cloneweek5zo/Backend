@@ -1,9 +1,17 @@
 package com.sparta.airbnb_clone.domain;
 
+import com.sparta.airbnb_clone.shared.FacilityType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Facility {
     @Id
@@ -15,5 +23,5 @@ public class Facility {
     private House house;
 
     @Column
-    private String type;
+    private FacilityType type;
 }
