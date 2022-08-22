@@ -61,12 +61,7 @@
                 data: JSON.stringify(data),
                 success: (response) => {
                     alert(response["data"]);
-                    document.querySelectorAll("input[type='text']").forEach(input => {
-                        input.value = "";
-                    });
-                    document.querySelectorAll("input[type='checkbox']").forEach(input => {
-                       input.checked = false;
-                    });
+                    window.location.reload();
                 },
                 error: (err) => {
                     alert(err);
@@ -378,7 +373,7 @@
                         <label for="facility7">뒷마당</label>
                     </div>
                     <div class="input-inner">
-                        <input type="checkbox" name="facility" id="facility8" value="CO_ALARLM" />
+                        <input type="checkbox" name="facility" id="facility8" value="CO_ALARM" />
                         <label for="facility8">일산화탄소 경보기</label>
                     </div>
                     <div class="input-inner">
