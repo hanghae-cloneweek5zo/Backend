@@ -1,16 +1,14 @@
 package com.sparta.airbnb_clone.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.airbnb_clone.dto.request.LoginRequestDto;
 import com.sparta.airbnb_clone.dto.request.MemberRequestDto;
-import com.sparta.airbnb_clone.dto.request.TokenDto;
-import com.sparta.airbnb_clone.dto.response.MemberResponseDto;
 import com.sparta.airbnb_clone.dto.response.ResponseDto;
 import com.sparta.airbnb_clone.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -24,7 +22,7 @@ public class MemberController {
 
   @PostMapping("/isvalidate/email")
   public boolean isvalidateEmail(@RequestBody MemberRequestDto requestDto) {
-    return memberService.isvalidateEmail(requestDto);
+    return memberService.isValidateEmail(requestDto);
 //            ?
 //            ResponseDto.success(
 //                    MemberResponseDto.builder()
@@ -38,7 +36,7 @@ public class MemberController {
 
   @PostMapping("/isvalidate/nickname")
   public boolean validateNickname(@RequestBody MemberRequestDto requestDto) {
-    return memberService.isvalidateNickname(requestDto);
+    return memberService.isValidateNickname(requestDto);
   }
 
   @PostMapping("/signup")
@@ -48,7 +46,7 @@ public class MemberController {
 
   @PostMapping("/login")
   public ResponseDto<?> login(@RequestBody @Valid LoginRequestDto requestDto,
-      HttpServletResponse response
+                              HttpServletResponse response
   ) {
     return memberService.login(requestDto, response);
   }
@@ -58,27 +56,5 @@ public class MemberController {
 //    TokenDto tokenDto= memberService.kakaoLogin(code);
 //    tokenDto.tokenToHeaders(response);
 //    return new ResponseEntity<>(ResponseDto.success(("로그인에 성공하였습니다.")), HttpStatus.OK);
-//  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-//  @RequestMapping(value = "/api/auth/member/reissue", method = RequestMethod.POST)
-//  public ResponseDto<?> reissue(HttpServletRequest request, HttpServletResponse response) {
-//    return memberService.reissue(request, response);
-//  }
-
-//  @PostMapping("/logout")
-//  public ResponseDto<?> logout(HttpServletRequest request) {
-//    return memberService.logout(request);
 //  }
 }

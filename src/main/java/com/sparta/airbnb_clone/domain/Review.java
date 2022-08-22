@@ -34,14 +34,6 @@ public class Review extends Timestamped {
     @Column(nullable = false)
     private int star;
 
-//    @JoinColumn(name = "house_id")
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private House house;
-
-    @JoinColumn(name = "member_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
-
     public Review(String descript, int star) {
         this.descript = descript;
         this.star = star;

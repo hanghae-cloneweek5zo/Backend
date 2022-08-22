@@ -14,7 +14,6 @@ import com.sparta.airbnb_clone.dto.response.ResponseDto;
 import com.sparta.airbnb_clone.jwt.TokenProvider;
 import com.sparta.airbnb_clone.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -46,7 +45,7 @@ public class MemberService {
 
   @Transactional
   public ResponseDto<?> createMember(MemberRequestDto requestDto) {
-    if (!isvalidateEmail(requestDto)) {
+    if (!isValidateEmail(requestDto)) {
         return ResponseDto.fail("Email_DUPLICATED", "중복된 이메일 입니다.");
     }
 
@@ -94,11 +93,11 @@ public class MemberService {
     );
   }
 
-  public boolean isvalidateEmail(MemberRequestDto requestDto) {
+  public boolean isValidateEmail(MemberRequestDto requestDto) {
     return isPresentEmail(requestDto.getEmail()) == null ? true : false;
   }
 
-  public boolean isvalidateNickname(MemberRequestDto requestDto) {
+  public boolean isValidateNickname(MemberRequestDto requestDto) {
       return isPresentNickname(requestDto.getNickname()) == null ? true : false;
   }
 
