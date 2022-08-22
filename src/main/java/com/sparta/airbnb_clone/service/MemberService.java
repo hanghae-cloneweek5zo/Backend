@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
@@ -28,8 +29,8 @@ public class MemberService {
 
   @Transactional
   public ResponseDto<?> createMember(MemberRequestDto requestDto) {
-    if (!validateNickname(requestDto)) {
-        return ResponseDto.fail("NICKNAME_DUPLICATED", "중복된 아이디 입니다.");
+    if (!isvalidateEmail(requestDto)) {
+        return ResponseDto.fail("Email_DUPLICATED", "중복된 이메일 입니다.");
     }
 
     if (!requestDto.getPassword().equals(requestDto.getPasswordConfirm())) {
@@ -38,14 +39,15 @@ public class MemberService {
     }
 
     Member member = Member.builder()
-            .nickname(requestDto.getNickname())
+            .email(requestDto.getEmail())
+            .nickname(requestDto.getNickname())     //빠져있어서 회원가입 못했었어ㅠㅠ
             .password(passwordEncoder.encode(requestDto.getPassword()))
             .build();
     memberRepository.save(member);
 
     return ResponseDto.success(
             MemberResponseDto.builder()
-                    .nickname(member.getNickname())
+                    .email(member.getEmail())
                     .msg("회원가입 완료")
                     .build()
     );
@@ -53,9 +55,9 @@ public class MemberService {
 
   @Transactional
   public ResponseDto<?> login(LoginRequestDto requestDto, HttpServletResponse response) {
-    Member member = isPresentMember(requestDto.getNickname());
+    Member member = isPresentEmail(requestDto.getEmail());
     if (null == member) {
-      return ResponseDto.fail("MEMBER_NOT_FOUND",
+      return ResponseDto.fail("EMAIL_NOT_FOUND",
           "사용자를 찾을 수 없습니다.");
     }
 
@@ -68,7 +70,7 @@ public class MemberService {
 
     return ResponseDto.success(
             MemberResponseDto.builder()
-                    .nickname(member.getNickname())
+                    .email(member.getEmail())
                     .msg("로그인 성공")
                     .build()
     );
@@ -76,16 +78,16 @@ public class MemberService {
 
 //  @Transactional
 //  public ResponseDto<?> logout(HttpServletRequest request) {
-////    if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
-////      return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
-////    }
+//    if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
+//      return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
+//    }
 //    Member member = tokenProvider.getMemberFromAuthentication();
 //    if (null == member) {
 //      return ResponseDto.fail("MEMBER_NOT_FOUND",
 //          "사용자를 찾을 수 없습니다.");
 //    }
 //    return tokenProvider.deleteRefreshToken(member);
-//  }
+////  }
 
   //  @Transactional
 //  public ResponseDto<?> reissue(HttpServletRequest request, HttpServletResponse response) {
@@ -111,20 +113,23 @@ public class MemberService {
 //    return ResponseDto.success("success");
 //  }
 
+  public boolean isvalidateEmail(MemberRequestDto requestDto) {
+    return isPresentEmail(requestDto.getEmail()) == null ? true : false;
+  }
 
-//  @Transactional(readOnly = true)
-//  public boolean validateEmail(MemberRequestDto requestDto) {
-//    return isPresentMember(requestDto.getEmail()) == null ? true : false;
-//  }
-
-  @Transactional(readOnly = true)
-  public boolean validateNickname(MemberRequestDto requestDto) {
-      return isPresentMember(requestDto.getNickname()) == null ? true : false;
+  public boolean isvalidateNickname(MemberRequestDto requestDto) {
+      return isPresentNickname(requestDto.getNickname()) == null ? true : false;
   }
 
   @Transactional(readOnly = true)
-  public Member isPresentMember(String nickname) {
+  public Member isPresentNickname(String nickname) {
     Optional<Member> optionalMember = memberRepository.findByNickname(nickname);
+    return optionalMember.orElse(null);
+  }
+
+  @Transactional(readOnly = true)
+  public Member isPresentEmail(String email) {
+    Optional<Member> optionalMember = memberRepository.findByEmail(email);
     return optionalMember.orElse(null);
   }
 

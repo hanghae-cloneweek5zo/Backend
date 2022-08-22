@@ -21,24 +21,24 @@ public class MemberController {
 
   private final MemberService memberService;
 
-//  @PostMapping("/validate/email")
-//  public ResponseDto<?> validateEmail(@RequestBody MemberRequestDto requestDto) {
-//    return memberService.validateEmail(requestDto) ?
-//            ResponseDto.success(
-//                    MemberResponseDto.builder()
-//                            .valid(memberService.validateNickname(requestDto))
-//                            .msg("사용할 수 있는 이메일입니다.")
-//                            .build()
-//            ) :
-//            ResponseDto.fail("NICKNAME_DUPLICATED", "중복되는 이메일 입니다.");
-//  }
+  @PostMapping("/validate/email")
+  public ResponseDto<?> validateEmail(@RequestBody MemberRequestDto requestDto) {
+    return memberService.isvalidateEmail(requestDto) ?
+            ResponseDto.success(
+                    MemberResponseDto.builder()
+                            .valid(memberService.isvalidateEmail(requestDto))
+                            .msg("사용할 수 있는 이메일입니다.")
+                            .build()
+            ) :
+            ResponseDto.fail("NICKNAME_DUPLICATED", "중복되는 이메일 입니다.");
+  }
 
   @PostMapping("/validate/nickname")
   public ResponseDto<?> validateNickname(@RequestBody MemberRequestDto requestDto) {
-    return memberService.validateNickname(requestDto) ?
+    return memberService.isvalidateNickname(requestDto) ?
             ResponseDto.success(
                     MemberResponseDto.builder()
-                            .valid(memberService.validateNickname(requestDto))
+                            .valid(memberService.isvalidateNickname(requestDto))
                             .msg("사용할 수 있는 닉네임입니다.")
                             .build()
             ) :

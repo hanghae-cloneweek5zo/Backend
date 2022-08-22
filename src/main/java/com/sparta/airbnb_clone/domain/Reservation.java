@@ -1,6 +1,5 @@
 package com.sparta.airbnb_clone.domain;
 
-import com.sparta.airbnb_clone.shared.FacilityType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,15 +12,18 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Facility {
+public class Reservation extends Timestamped {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long facilityId;
+    private Long reservationId;
 
     @JoinColumn(name = "house_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private House house;
 
-    @Column
-    private FacilityType type;
+    @JoinColumn(name = "member_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member host;
+
 }

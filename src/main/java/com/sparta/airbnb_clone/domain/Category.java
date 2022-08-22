@@ -1,6 +1,6 @@
 package com.sparta.airbnb_clone.domain;
 
-import com.sparta.airbnb_clone.shared.FacilityType;
+import com.sparta.airbnb_clone.shared.CategoryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,15 +13,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Facility {
+public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long facilityId;
+    private Long categoryId;
 
     @JoinColumn(name = "house_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private House house;
 
     @Column
-    private FacilityType type;
+    private CategoryType type;
 }
