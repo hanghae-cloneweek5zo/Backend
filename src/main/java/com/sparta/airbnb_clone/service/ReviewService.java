@@ -45,7 +45,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public Double getReviewStarAvg(Long houseId) {
-        List<Review> reviewList = reviewRepository.findAllByHouseIdOrderByCreatedAtDesc(houseId);
+        List<Review> reviewList = reviewRepository.findAllByHouseOrderByCreatedAtDesc(houseId);
         double starAvg = 0;
         for (Review review : reviewList) {
             starAvg += review.getStar();

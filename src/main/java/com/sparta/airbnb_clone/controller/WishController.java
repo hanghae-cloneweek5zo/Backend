@@ -13,13 +13,10 @@ public class WishController {
     private final WishService wishService;
 
     @PostMapping("/auth/houses/{houseId}/wishes")
-    public ResponseDto<?> createWish(@RequestBody WishRequestDto requestDto, @PathVariable Long houseId){
-        return wishService.createWish(requestDto);
+    public ResponseDto<?> createWish(@RequestBody Long hostId, @PathVariable Long houseId){
+        return wishService.toggleWishByHouse(hostId,houseId);
     }
 
-    @DeleteMapping("/auth/houses/{houseId}/wishes")
-    public ResponseDto<?> deleteWish(@PathVariable Long houseId){
-        return wishService.deleteWishes(houseId);
 
-    }
+
 }
