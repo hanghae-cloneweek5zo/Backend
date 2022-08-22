@@ -1,15 +1,16 @@
 package com.sparta.airbnb_clone.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.airbnb_clone.dto.request.LoginRequestDto;
 import com.sparta.airbnb_clone.dto.request.MemberRequestDto;
+import com.sparta.airbnb_clone.dto.request.TokenDto;
 import com.sparta.airbnb_clone.dto.response.MemberResponseDto;
 import com.sparta.airbnb_clone.dto.response.ResponseDto;
 import com.sparta.airbnb_clone.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -51,6 +52,25 @@ public class MemberController {
   ) {
     return memberService.login(requestDto, response);
   }
+
+//  @GetMapping("/kakao/callback")
+//  public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+//    TokenDto tokenDto= memberService.kakaoLogin(code);
+//    tokenDto.tokenToHeaders(response);
+//    return new ResponseEntity<>(ResponseDto.success(("로그인에 성공하였습니다.")), HttpStatus.OK);
+//  }
+
+
+
+
+
+
+
+
+
+
+
+
 
 //  @RequestMapping(value = "/api/auth/member/reissue", method = RequestMethod.POST)
 //  public ResponseDto<?> reissue(HttpServletRequest request, HttpServletResponse response) {

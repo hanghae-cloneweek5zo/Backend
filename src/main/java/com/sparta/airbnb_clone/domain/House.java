@@ -47,8 +47,8 @@ public class House extends Timestamped {
 
     @Column(nullable = false)
     private int starAvg;
-
-//    @OneToMany(mappedBy = "Accommodation", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+//
+//    @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Review> reviews;
 
     @JoinColumn(name = "member_id", nullable = false)
