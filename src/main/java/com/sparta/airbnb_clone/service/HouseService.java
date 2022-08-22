@@ -5,15 +5,12 @@ import com.sparta.airbnb_clone.dto.request.HouseRequestDto;
 import com.sparta.airbnb_clone.dto.response.ResponseDto;
 import com.sparta.airbnb_clone.jwt.TokenProvider;
 import com.sparta.airbnb_clone.repository.*;
-import com.sparta.airbnb_clone.shared.CategoryType;
 import com.sparta.airbnb_clone.shared.FacilityType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -21,7 +18,6 @@ import java.util.List;
 public class HouseService {
 
     private final HouseRepository houseRepository;
-    private final CategoryRepository categoryRepository;
     private final FacilityRepository facilityRepository;
     private final HouseImgRepository houseImgRepository;
     private final MemberRepository memberRepository;
@@ -32,50 +28,36 @@ public class HouseService {
     @Transactional
     public ResponseDto<?> createHouse(HouseRequestDto requestDto) {
 
-//        Member member = memberRepository.findById(requestDto.getMemberId()).orElseThrow(
-//                () -> new NullPointerException("존재하지 않는 회원")
-//        );
-
-//        Category category = categoryRepository.findById(requestDto.getCategoryId()).orElseThrow(
-//                () -> new NullPointerException("존재하지 않는 카테고리")
-//        );
+        Member member = memberRepository.findById(requestDto.getMemberId()).orElseThrow(
+                () -> new NullPointerException("존재하지 않는 회원")
+        );
 
         House house = House.builder()
-//                .host(member)
+                .host(member)
+                .category(requestDto.getCategory())
                 .title(requestDto.getTitle())
                 .nation(requestDto.getNation())
                 .address(requestDto.getAddress())
                 .longitude(requestDto.getLongitude())
                 .latitude(requestDto.getLatitude())
+                .starAvg(0)
+                .descript(requestDto.getDescript())
+                .price(requestDto.getPrice())
                 .checkIn(requestDto.getCheckIn())
                 .checkOut(requestDto.getCheckOut())
-                .descript(requestDto.getDescript())
-//                .starAvg(requestDto.getStarAvg())
                 .bedRoomCnt(requestDto.getBedRoomCnt())
                 .bedCnt(requestDto.getBedCnt())
                 .build();
 
         houseRepository.save(house);
 
-        List<Category> categories = new ArrayList<>();
-
-        for (CategoryType type : requestDto.getCategories()) {
-            categories.add(
-                    Category.builder()
-                            .house(house)
-                            .type(type)
-                            .build()
-            );
-        }
-        categoryRepository.saveAll(categories);
-
         List<Facility> facilities = new ArrayList<>();
 
-        for (FacilityType type : requestDto.getFacilities()) {
+        for (FacilityType facilityType : requestDto.getFacilities()) {
             facilities.add(
                     Facility.builder()
                             .house(house)
-                            .type(type)
+                            .facilityType(facilityType)
                             .build()
             );
         }

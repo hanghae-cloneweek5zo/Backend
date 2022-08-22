@@ -1,9 +1,9 @@
 package com.sparta.airbnb_clone.domain;
 
+import com.sparta.airbnb_clone.shared.Category;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Builder
 @Getter
@@ -17,6 +17,13 @@ public class House extends Timestamped {
     private Long houseId;
 
     @Column(nullable = false)
+    private Category category;
+
+    @JoinColumn(name = "member_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member host;
+
+    @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
@@ -26,10 +33,19 @@ public class House extends Timestamped {
     private String address;
 
     @Column(nullable = false)
-    private double longitude;
+    private String longitude;
 
     @Column(nullable = false)
-    private double latitude;
+    private String latitude;
+
+    @Column(nullable = false)
+    private double starAvg;
+
+    @Column(nullable = false)
+    private String descript;
+
+    @Column(nullable = false)
+    private int price;
 
     @Column(nullable = false)
     private String checkIn;
@@ -37,28 +53,9 @@ public class House extends Timestamped {
     @Column(nullable = false)
     private String checkOut;
 
-    @JoinColumn(name = "member_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member host;
-
-    @JoinColumn(name = "category_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Category category;
-
-    @Column(nullable = false)
-    private String descript;
-
-//    @Column(nullable = false)
-//    private int starAvg;
-
     @Column(nullable = false)
     private int bedRoomCnt;
 
     @Column(nullable = false)
     private int bedCnt;
-
-    @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HouseImg> imgs;
-
-
 }

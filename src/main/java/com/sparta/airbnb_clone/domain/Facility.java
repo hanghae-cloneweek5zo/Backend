@@ -23,5 +23,5 @@ public class Facility {
     private House house;
 
     @Column
-    private FacilityType type;
+    private FacilityType facilityType;
 }
