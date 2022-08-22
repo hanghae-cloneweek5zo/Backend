@@ -14,18 +14,12 @@ import javax.validation.constraints.Size;
 public class MemberRequestDto {
 
   @NotBlank
-//  @Size(min = 4, max = 12)
-//  @Pattern(regexp = "[a-zA-Z\\d]*${3,12}")
   private String email;
 
   @NotBlank
-  @Size(min = 4, max = 12)
-  @Pattern(regexp = "[a-zA-Z\\d]*${3,12}")
   private String nickname;
 
   @NotBlank
-  @Size(min = 8, max = 20)
-  @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{8,20}$") // 영문, 숫자 포함 8자 이상 20자 이하
   private String password;
 
   @NotBlank
