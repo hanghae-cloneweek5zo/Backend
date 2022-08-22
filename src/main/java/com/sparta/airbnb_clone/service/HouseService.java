@@ -2,6 +2,7 @@ package com.sparta.airbnb_clone.service;
 
 import com.sparta.airbnb_clone.domain.*;
 import com.sparta.airbnb_clone.dto.request.HouseRequestDto;
+import com.sparta.airbnb_clone.dto.response.HouseMainResponseDto;
 import com.sparta.airbnb_clone.dto.response.ResponseDto;
 import com.sparta.airbnb_clone.jwt.TokenProvider;
 import com.sparta.airbnb_clone.repository.*;
@@ -77,6 +78,26 @@ public class HouseService {
         houseImgRepository.saveAll(houseImgs);
 
         return ResponseDto.success("저장 완료");
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseDto<?> getAllHouses() {
+        List<House> houses = houseRepository.findAllByOrderByModifiedAtDesc();
+        List<HouseMainResponseDto> houseMainResponseDtoList = new ArrayList<>();
+
+        for (House house : houses) {
+            houseMainResponseDtoList.add(
+                    HouseMainResponseDto.builder()
+                            .houseId(house.getHouseId())
+                            .title(house.getTitle())
+//                            .distance()
+                            .price(house.getPrice())
+                            .starAvg(house.getStarAvg())
+                            .build()
+            );
+        }
+
+        return ResponseDto.success(houseMainResponseDtoList);
     }
 
     @Transactional
