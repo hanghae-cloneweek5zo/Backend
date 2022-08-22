@@ -35,6 +35,7 @@ public class Member extends Timestamped {
   @Column(unique = true)
   private Long kakaoId;
 
+  private String profileImgUrl;
 
   @Override
   public boolean equals(Object o) {

@@ -14,7 +14,7 @@ public class House extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long AccommodationId;
+    private Long houseId;
 
     @Column(nullable = false)
     private String title;
@@ -37,10 +37,13 @@ public class House extends Timestamped {
     @Column(nullable = false)
     private String checkOut;
 
-//    private List<HouseImg> HouseImgs;
+    @JoinColumn(name = "member_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member host;
 
-    @ElementCollection
-    private List<String> categories;
+    @JoinColumn(name = "category_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category category;
 
     @Column(nullable = false)
     private String descript;
@@ -61,8 +64,10 @@ public class House extends Timestamped {
     @Column(nullable = false)
     private int bedCnt;
 
-//    private Facility facility;
+    @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HouseImg> imgs;
 
-//    @OneToMany(mappedBy = "Accommodation", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Reservation> reservations;
+    @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Facility> facilities;
+
 }

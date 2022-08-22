@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentRequestDto {
-    private String description;
+public class ReviewRequestDto {
+    private String descript;
     private int star;
 }
