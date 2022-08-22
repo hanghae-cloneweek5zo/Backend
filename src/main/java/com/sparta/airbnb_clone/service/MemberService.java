@@ -156,7 +156,7 @@ public class MemberService {
   }
 
 
-//@Value("${myKaKaoApiKey}")
+//@Value("${kakaoapi}")
 //private String myKakaoApiKey;
 
   private String getAccessToken(String code) throws JsonProcessingException {
