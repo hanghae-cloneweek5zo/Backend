@@ -26,13 +26,9 @@ public class ReviewService {
         if(requestDto.getDescript() == null){
             return ResponseDto.fail("DESCRIPTION_NULL","리뷰를 입력해주세요");
         }
-
         Review review = new Review(requestDto.getDescript(),requestDto.getStar());
-
         reviewRepository.save(review);
-
         ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
-
         return ResponseDto.success(reviewResponseDto);
     }
 
@@ -54,7 +50,7 @@ public class ReviewService {
     }
 
     public Double getRevieStarAvg(Long accId){
-        List<Review> reviewList = reviewRepository.findAllByHouseAccommodationIdOrderByCreatedAtDesc(accId);
+        List<Review> reviewList = reviewRepository.findAllByHouseOrderByCreatedAtDesc(accId);
         double starAvg = 0;
         for(Review review : reviewList){
             starAvg += review.getStar();

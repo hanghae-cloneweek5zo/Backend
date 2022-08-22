@@ -12,5 +12,5 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
 
     List<Review> findAllBy();
 
-    List<Review> findAllByHouseAccommodationIdOrderByCreatedAtDesc(Long accId);
+    List<Review> findAllByHouseOrderByCreatedAtDesc(Long accId);
 }
