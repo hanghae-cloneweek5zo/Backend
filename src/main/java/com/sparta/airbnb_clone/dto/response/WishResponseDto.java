@@ -16,4 +16,8 @@ public class WishResponseDto {
         this.houseId = wish.getResponseHouseId(wish);
         this.msg = msg;
     }
+    public WishResponseDto(Wish wish){
+        this.houseId = wish.getResponseHouseId(wish);
+    }
+
 }
