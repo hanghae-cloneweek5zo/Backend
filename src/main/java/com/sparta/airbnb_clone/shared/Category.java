@@ -1,6 +1,6 @@
 package com.sparta.airbnb_clone.shared;
 
-public enum CategoryType {
+public enum Category {
     FANCY,
     NATIONAL_PARK,
     SHACK,
