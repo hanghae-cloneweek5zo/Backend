@@ -51,11 +51,27 @@ public class House extends Timestamped {
     private String checkIn;
 
     @Column(nullable = false)
+<<<<<<< Updated upstream
     private String checkOut;
+=======
+    private double starAvg;
+>>>>>>> Stashed changes
 
     @Column(nullable = false)
     private int bedRoomCnt;
 
     @Column(nullable = false)
     private int bedCnt;
+<<<<<<< Updated upstream
+=======
+
+    @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HouseImg> imgs;
+
+
+    public void updateStarAvg(double starAvg){
+        this.starAvg = starAvg;
+    }
+
+>>>>>>> Stashed changes
 }
