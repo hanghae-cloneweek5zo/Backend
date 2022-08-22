@@ -31,6 +31,10 @@ public class Review extends Timestamped {
     @Column(nullable = false)
     private String descript;
 
+    public String getDescript() {
+        return descript;
+    }
+
     @Column(nullable = false)
     private int star;
 
@@ -45,6 +49,7 @@ public class Review extends Timestamped {
         this.house = house;
         this.member = member;
     }
+
 
 
 }
