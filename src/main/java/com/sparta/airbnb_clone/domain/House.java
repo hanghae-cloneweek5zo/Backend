@@ -16,6 +16,13 @@ public class House extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long houseId;
 
+//    @JoinColumn(name = "member_id", nullable = false)
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private Member host;
+
+    @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Category> categories;
+
     @Column(nullable = false)
     private String title;
 
@@ -37,19 +44,11 @@ public class House extends Timestamped {
     @Column(nullable = false)
     private String checkOut;
 
-    @JoinColumn(name = "member_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member host;
-
-    @JoinColumn(name = "category_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Category category;
-
     @Column(nullable = false)
     private String descript;
 
-    @Column(nullable = false)
-    private int starAvg;
+//    @Column(nullable = false)
+//    private double starAvg;
 
     @Column(nullable = false)
     private int bedRoomCnt;
@@ -57,10 +56,7 @@ public class House extends Timestamped {
     @Column(nullable = false)
     private int bedCnt;
 
-    @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HouseImg> imgs;
-
-    @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Facility> facilities;
+//    @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Facility> facilities;
 
 }
