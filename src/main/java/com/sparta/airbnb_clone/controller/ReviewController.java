@@ -15,9 +15,9 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping("/auth/houses/{houseId}/reviews")
-    public ResponseDto<?> createReview(@RequestBody ReviewRequestDto requestDto, HttpServletRequest request,
+    public ResponseDto<?> createReview(@RequestBody ReviewRequestDto requestDto,@RequestBody Long hostId,
                                        @PathVariable Long houseId){
-        return reviewService.createReview(requestDto , request, houseId);
+        return reviewService.createReview(requestDto , hostId, houseId);
     }
 
 
