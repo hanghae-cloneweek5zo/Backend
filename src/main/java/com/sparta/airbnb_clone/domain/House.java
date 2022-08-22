@@ -48,8 +48,8 @@ public class House extends Timestamped {
     @Column(nullable = false)
     private String descript;
 
-    @Column(nullable = false)
-    private int starAvg;
+//    @Column(nullable = false)
+//    private int starAvg;
 
     @Column(nullable = false)
     private int bedRoomCnt;
@@ -60,7 +60,5 @@ public class House extends Timestamped {
     @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HouseImg> imgs;
 
-    @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Facility> facilities;
 
 }

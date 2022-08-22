@@ -1,6 +1,5 @@
 package com.sparta.airbnb_clone.service;
 
-
 import com.sparta.airbnb_clone.domain.House;
 import com.sparta.airbnb_clone.domain.Review;
 import com.sparta.airbnb_clone.dto.request.ReviewRequestDto;
@@ -20,9 +19,8 @@ import java.util.List;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
 
-
     @Transactional
-    public ResponseDto<?> createReview(ReviewRequestDto requestDto, HttpServletRequest httpServlet, Long accId){
+    public ResponseDto<?> createReview(ReviewRequestDto requestDto, HttpServletRequest httpServlet, Long houseId){
         if(requestDto.getDescript() == null){
             return ResponseDto.fail("DESCRIPTION_NULL","리뷰를 입력해주세요");
         }
@@ -44,12 +42,12 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseDto<?> getReviewsStar(Long accId){
-        double reviewStarAvg = this.getRevieStarAvg(accId);
+    public ResponseDto<?> getReviewsStar(Long houseId){
+        double reviewStarAvg = this.getRevieStarAvg(houseId);
         return ResponseDto.success(reviewStarAvg);
     }
 
-    public Double getRevieStarAvg(Long accId){
+    public Double getRevieStarAvg(Long houseId){
         List<Review> reviewList = reviewRepository.findAllByHouseOrderByCreatedAtDesc(accId);
         double starAvg = 0;
         for(Review review : reviewList){

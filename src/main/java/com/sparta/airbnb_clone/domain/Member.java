@@ -32,7 +32,9 @@ public class Member extends Timestamped {
   @JsonIgnore
   private String password;
 
-  @Column
+  @Column(unique = true)
+  private Long kakaoId;
+
   private String profileImgUrl;
 
   @Override
@@ -44,7 +46,7 @@ public class Member extends Timestamped {
       return false;
     }
     Member member = (Member) o;
-    return memberId != null && Objects.equals(memberId, member.memberId);
+    return memberId != null && Objects.equals(member, member.memberId);
   }
 
   @Override
@@ -55,4 +57,13 @@ public class Member extends Timestamped {
   public boolean validatePassword(PasswordEncoder passwordEncoder, String password) {
     return passwordEncoder.matches(password, this.password);
   }
+
+  public Member(String nickname, String password, String email, Long kakaoId) {
+    this.nickname = nickname;
+    this.password = password;
+    this.email = email;
+    this.kakaoId = kakaoId;
+
+  }
+
 }
