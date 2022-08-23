@@ -5,6 +5,7 @@ import com.sparta.airbnb_clone.domain.Member;
 import com.sparta.airbnb_clone.domain.Wish;
 import com.sparta.airbnb_clone.dto.response.ResponseDto;
 import com.sparta.airbnb_clone.dto.response.WishResponseDto;
+import com.sparta.airbnb_clone.jwt.TokenProvider;
 import com.sparta.airbnb_clone.repository.HouseRepository;
 import com.sparta.airbnb_clone.repository.MemberRepository;
 import com.sparta.airbnb_clone.repository.WishRepository;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,23 +22,27 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class WishService {
     private final HouseRepository houseRepository;
-    private final MemberRepository memberRepository;
+    private final TokenProvider tokenProvider;
     private final WishRepository wishRepository;
     @Transactional
-    public ResponseDto<?> toggleWishByHouse(Long hostId,Long houseId){
-        Member host = isPresentMember(hostId);
-        if(host == null){
-            return ResponseDto.fail("HOST_ID_NULL","호스트 아이디가 없습니다.");
+    public ResponseDto<?> toggleWishByHouse(HttpServletRequest request, Long houseId){
+        if (null == request.getHeader("Authorization")) {
+            return ResponseDto.fail("MEMBER_NOT_FOUND",
+                    "로그인이 필요합니다.");
+        }
+        Member member = validateMember();
+        if (null == member) {
+            return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
         }
         House house = isPresentHouse(houseId);
         if(house == null){
             return ResponseDto.fail("HOUSE_ID_NULL","하우스의 아이디가 존재하지 않습니다.");
         }
 
-        Wish wish = isPresentWishByHouse(house,host);
+        Wish wish = isPresentWishByHouse(house,member);
         //좋아요 안누름
         if(wish == null){
-            Wish tempWish = new Wish(house,host);
+            Wish tempWish = new Wish(house,member);
             wishRepository.save(tempWish);
             return ResponseDto.success(new WishResponseDto(tempWish,"위시리스트에 추가되었습니다."));
         }else{
@@ -60,10 +66,9 @@ public class WishService {
         Optional<House> houseOptional = houseRepository.findById(houseId);
         return houseOptional.orElse(null);
     }
-    @Transactional(readOnly = true)
-    public Member isPresentMember(Long memberId){
-        Optional<Member> memberOptional = memberRepository.findById(memberId);
-        return memberOptional.orElse(null);
+    @Transactional
+    public Member validateMember() {
+        return tokenProvider.getMemberFromAuthentication();
     }
 
     @Transactional(readOnly = true)
