@@ -1,5 +1,6 @@
 package com.sparta.airbnb_clone.dto.response;
 
+import com.sparta.airbnb_clone.domain.House;
 import com.sparta.airbnb_clone.domain.Wish;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,4 +21,7 @@ public class WishResponseDto {
         this.houseId = wish.getResponseHouseId(wish);
     }
 
+    public WishResponseDto(House house) {
+        this.houseId = house.getHouseId();
+    }
 }

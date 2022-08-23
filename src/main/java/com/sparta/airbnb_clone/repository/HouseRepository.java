@@ -8,5 +8,11 @@ import java.util.List;
 
 public interface HouseRepository extends JpaRepository<House, Long> {
     List<House> findAllByOrderByModifiedAtDesc();
+<<<<<<< Updated upstream
     List<House> findAllByHost(Member host);
+=======
+
+    List<House> findAllByHouseId(Long houseId);
+
+>>>>>>> Stashed changes
 }
