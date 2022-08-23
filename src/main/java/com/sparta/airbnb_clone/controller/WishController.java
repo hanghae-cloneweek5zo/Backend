@@ -7,14 +7,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequiredArgsConstructor
 public class WishController {
     private final WishService wishService;
 
     @PostMapping("/auth/houses/{houseId}/wishes")
-    public ResponseDto<?> createWish(@RequestBody Long hostId, @PathVariable Long houseId){
-        return wishService.toggleWishByHouse(hostId,houseId);
+    public ResponseDto<?> createWish(HttpServletRequest request, @PathVariable Long houseId){
+        return wishService.toggleWishByHouse(request,houseId);
     }
 
 
