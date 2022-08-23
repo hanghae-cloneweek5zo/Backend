@@ -12,9 +12,9 @@ import java.util.Optional;
 public interface WishRepository extends JpaRepository<Wish, Long> {
 
     @Query("select DISTINCT w from Wish w join fetch w.host ORDER BY w.createdAt desc")
-    List<Wish> findAllByHouse(Long hostId);
+    List<Wish> findAllByHouse(Member member);
 
-    List<Wish> findAllOrderByHouse(Long hostId);
+//    List<Wish> findAllOrderByHouse(Long hostId);
 
     Optional<Wish> findByHouseAndHost(House house, Member host);
 
