@@ -1,12 +1,14 @@
 package com.sparta.airbnb_clone.service;
 
 import com.sparta.airbnb_clone.domain.House;
+import com.sparta.airbnb_clone.domain.HouseImg;
 import com.sparta.airbnb_clone.domain.Member;
 import com.sparta.airbnb_clone.domain.Wish;
 import com.sparta.airbnb_clone.dto.response.HouseMainResponseDto;
 import com.sparta.airbnb_clone.dto.response.ResponseDto;
 import com.sparta.airbnb_clone.dto.response.WishResponseDto;
 import com.sparta.airbnb_clone.jwt.TokenProvider;
+import com.sparta.airbnb_clone.repository.HouseImgRepository;
 import com.sparta.airbnb_clone.repository.HouseRepository;
 import com.sparta.airbnb_clone.repository.WishRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class WishService {
     private final HouseRepository houseRepository;
     private final TokenProvider tokenProvider;
     private final WishRepository wishRepository;
+    private final HouseImgRepository houseImgRepository;
 
     @Transactional
     public ResponseDto<?> toggleWishByHouse(HttpServletRequest request, Long houseId) {
@@ -69,7 +72,17 @@ public class WishService {
         for (Wish temp : wishList) {
             houseList = houseRepository.findAllByHouseId(temp.getHouse().getHouseId());
             for(House h : houseList){
-                wishResponseDtoArrayList.add(new HouseMainResponseDto(h.getHouseId(),h.getCategory(),h.getTitle(),0,h.getPrice(),h.getStarAvg()));
+                List<HouseImg> houseImgs = houseImgRepository.findAllByHouse(h);
+
+                wishResponseDtoArrayList.add(new HouseMainResponseDto(
+                        h.getHouseId(),
+                        h.getCategory(),
+                        h.getTitle(),
+                        h.getNation(),
+                        h.getPrice(),
+                        h.getStarAvg(),
+                        houseImgs.get(0).getImgUrl()
+                ));
             }
 
         }
