@@ -35,7 +35,14 @@ public class Member extends Timestamped {
   @Column(unique = true)
   private Long kakaoId;
 
+  @Column
   private String profileImgUrl;
+
+  @Column
+  private Double point;
+
+  @Column
+  private Boolean isSuperHost;
 
   @Override
   public boolean equals(Object o) {
@@ -63,7 +70,10 @@ public class Member extends Timestamped {
     this.password = password;
     this.email = email;
     this.kakaoId = kakaoId;
-
+    this.isSuperHost = point >= 4.5 ? true : false;
   }
 
+  public void updatePoint(Double point) {
+    this.point = point;
+  }
 }

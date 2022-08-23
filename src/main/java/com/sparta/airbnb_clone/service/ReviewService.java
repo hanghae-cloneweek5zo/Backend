@@ -3,12 +3,12 @@ package com.sparta.airbnb_clone.service;
 import com.sparta.airbnb_clone.domain.House;
 import com.sparta.airbnb_clone.domain.Member;
 import com.sparta.airbnb_clone.domain.Review;
+import com.sparta.airbnb_clone.service.MemberService;
 import com.sparta.airbnb_clone.dto.request.ReviewRequestDto;
 import com.sparta.airbnb_clone.dto.response.ResponseDto;
 import com.sparta.airbnb_clone.dto.response.ReviewResponseDto;
 import com.sparta.airbnb_clone.jwt.TokenProvider;
 import com.sparta.airbnb_clone.repository.HouseRepository;
-import com.sparta.airbnb_clone.repository.MemberRepository;
 import com.sparta.airbnb_clone.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +23,7 @@ import java.util.Optional;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final HouseRepository houseRepository;
+    private final MemberService memberService;
     private final TokenProvider tokenProvider;
 
     @Transactional
@@ -48,6 +49,7 @@ public class ReviewService {
         Review review = new Review(requestDto.getDescript(), requestDto.getStar(), house, member);
         reviewRepository.save(review);
         house.updateStarAvg(getReviewStarAvg(house));
+        member.updatePoint(memberService.addPoint(house.getHost()));
         ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
         return ResponseDto.success(reviewResponseDto);
     }

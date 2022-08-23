@@ -3,6 +3,7 @@ package com.sparta.airbnb_clone.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.airbnb_clone.domain.House;
 import com.sparta.airbnb_clone.domain.Member;
 import com.sparta.airbnb_clone.domain.UserDetailsImpl;
 import com.sparta.airbnb_clone.dto.request.KakaoUserInfoDto;
@@ -12,6 +13,7 @@ import com.sparta.airbnb_clone.dto.request.TokenDto;
 import com.sparta.airbnb_clone.dto.response.MemberResponseDto;
 import com.sparta.airbnb_clone.dto.response.ResponseDto;
 import com.sparta.airbnb_clone.jwt.TokenProvider;
+import com.sparta.airbnb_clone.repository.HouseRepository;
 import com.sparta.airbnb_clone.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -29,7 +31,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,6 +42,7 @@ import java.util.UUID;
 public class MemberService {
 
   private final MemberRepository memberRepository;
+  private final HouseRepository houseRepository;
 
   private final PasswordEncoder passwordEncoder;
 
@@ -58,6 +63,7 @@ public class MemberService {
             .email(requestDto.getEmail())
             .nickname(requestDto.getNickname())
             .password(passwordEncoder.encode(requestDto.getPassword()))
+            .isSuperHost(false)
             .build();
     memberRepository.save(member);
 
@@ -221,4 +227,19 @@ public class MemberService {
     return new KakaoUserInfoDto(id, nickname, loginId);
   }
 
+  @Transactional
+  public Double addPoint(Member host) {
+    Double point = 0.0;
+    List<House> houses = houseRepository.findAllByHost(host);
+    for (House house : houses) {
+      point += house.getStarAvg();
+    }
+    point /= houses.size();
+    return point;
+  }
+
+  @Transactional
+  public Member validateMember() {
+    return tokenProvider.getMemberFromAuthentication();
+  }
 }

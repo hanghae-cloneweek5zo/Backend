@@ -16,6 +16,6 @@ public class HostResponseDto {
     private String nickname;
     private String profileImgUrl;
     private int reviewCnt;
-    private Boolean superHost;
+    private Boolean isSuperHost;
     private LocalDateTime createdAt;
 }

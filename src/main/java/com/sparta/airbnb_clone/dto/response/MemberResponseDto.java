@@ -25,6 +25,8 @@ public class MemberResponseDto {
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String msg;
 
+  private Boolean isSuperHost;
+
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private LocalDateTime createdAt;
 
