@@ -4,10 +4,7 @@ import com.sparta.airbnb_clone.dto.request.HouseRequestDto;
 import com.sparta.airbnb_clone.dto.response.ResponseDto;
 import com.sparta.airbnb_clone.service.HouseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +20,10 @@ public class HouseController {
     @GetMapping("/houses")
     public ResponseDto<?> getAllHouses() {
         return houseService.getAllHouses();
+    }
+
+    @GetMapping("/houses/{houseId}")
+    public ResponseDto<?> getHouse(@PathVariable Long houseId) {
+        return houseService.getHouseByHouseId(houseId);
     }
 }
