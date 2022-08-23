@@ -87,14 +87,17 @@ public class HouseService {
         List<HouseMainResponseDto> houseMainResponseDtoList = new ArrayList<>();
 
         for (House house : houses) {
+            List<HouseImg> houseImgs = houseImgRepository.findAllByHouse(house);
+
             houseMainResponseDtoList.add(
                     HouseMainResponseDto.builder()
                             .houseId(house.getHouseId())
                             .category(house.getCategory())
                             .title(house.getTitle())
-                            .distance(0)
+                            .nation(house.getNation())
                             .price(house.getPrice())
                             .starAvg(house.getStarAvg())
+                            .imgUrl(houseImgs.get(0).getImgUrl())
                             .build()
             );
         }
@@ -150,7 +153,7 @@ public class HouseService {
                                         .nickname(house.getHost().getNickname())
                                         .profileImgUrl("")
                                         .reviewCnt(reviewRepository.countByHouse(house))
-//                                        .superHost()
+                                        .isSuperHost(house.getHost().getIsSuperHost())
                                         .createdAt(house.getCreatedAt())
                                         .build()
                         )
@@ -175,9 +178,6 @@ public class HouseService {
 
     @Transactional
     public Member validateMember() {
-//        if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
-//            return null;
-//        }
         return tokenProvider.getMemberFromAuthentication();
     }
 
@@ -186,4 +186,5 @@ public class HouseService {
         Optional<House> optionalHouse = houseRepository.findById(houseId);
         return optionalHouse.orElse(null);
     }
+
 }

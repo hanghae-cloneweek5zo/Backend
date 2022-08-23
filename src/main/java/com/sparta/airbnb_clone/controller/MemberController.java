@@ -5,11 +5,9 @@ import com.sparta.airbnb_clone.dto.request.MemberRequestDto;
 import com.sparta.airbnb_clone.dto.response.ResponseDto;
 import com.sparta.airbnb_clone.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -57,4 +55,5 @@ public class MemberController {
 //    tokenDto.tokenToHeaders(response);
 //    return new ResponseEntity<>(ResponseDto.success(("로그인에 성공하였습니다.")), HttpStatus.OK);
 //  }
+
 }

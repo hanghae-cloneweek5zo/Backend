@@ -14,7 +14,8 @@ public class HouseMainResponseDto {
     private Long houseId;
     private Category category;
     private String title;
-    private int distance;
+    private String nation;
     private int price;
     private Double starAvg;
+    private String imgUrl;
 }
