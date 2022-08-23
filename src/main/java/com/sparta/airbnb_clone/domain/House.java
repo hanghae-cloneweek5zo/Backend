@@ -60,13 +60,7 @@ public class House extends Timestamped {
     @Column(nullable = false)
     private int bedCnt;
 
-
-    @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HouseImg> imgs;
-
-
     public void updateStarAvg(Double starAvg) {
         this.starAvg = starAvg;
     }
-
 }

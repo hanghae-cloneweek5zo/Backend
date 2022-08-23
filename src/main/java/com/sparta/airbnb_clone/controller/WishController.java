@@ -19,6 +19,11 @@ public class WishController {
         return wishService.toggleWishByHouse(request,houseId);
     }
 
+    @GetMapping("/auth/houses/wishes")
+    public ResponseDto<?> getWishes(HttpServletRequest request){
+        return wishService.getWishes(request);
+
+    }
 
 
 }
