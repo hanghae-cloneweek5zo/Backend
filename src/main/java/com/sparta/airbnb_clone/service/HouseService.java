@@ -5,6 +5,8 @@ import com.sparta.airbnb_clone.dto.request.HouseRequestDto;
 import com.sparta.airbnb_clone.dto.response.*;
 import com.sparta.airbnb_clone.jwt.TokenProvider;
 import com.sparta.airbnb_clone.repository.*;
+import com.sparta.airbnb_clone.repository.support.HouseRepositorySupport;
+import com.sparta.airbnb_clone.shared.Category;
 import com.sparta.airbnb_clone.shared.FacilityType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class HouseService {
 
     private final HouseRepository houseRepository;
+    private final HouseRepositorySupport houseRepositorySupport;
     private final ReviewRepository reviewRepository;
     private final FacilityRepository facilityRepository;
     private final HouseImgRepository houseImgRepository;
@@ -84,6 +87,30 @@ public class HouseService {
     @Transactional(readOnly = true)
     public ResponseDto<?> getAllHouses() {
         List<House> houses = houseRepository.findAllByOrderByModifiedAtDesc();
+        List<HouseMainResponseDto> houseMainResponseDtoList = new ArrayList<>();
+
+        for (House house : houses) {
+            List<HouseImg> houseImgs = houseImgRepository.findAllByHouse(house);
+
+            houseMainResponseDtoList.add(
+                    HouseMainResponseDto.builder()
+                            .houseId(house.getHouseId())
+                            .category(house.getCategory())
+                            .title(house.getTitle())
+                            .nation(house.getNation())
+                            .price(house.getPrice())
+                            .starAvg(house.getStarAvg())
+                            .imgUrl(houseImgs.get(0).getImgUrl())
+                            .build()
+            );
+        }
+
+        return ResponseDto.success(houseMainResponseDtoList);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseDto<?> getAllHousesByCategory(Category category) {
+        List<House> houses = houseRepositorySupport.findAllByCategory(category);
         List<HouseMainResponseDto> houseMainResponseDtoList = new ArrayList<>();
 
         for (House house : houses) {
@@ -186,5 +213,4 @@ public class HouseService {
         Optional<House> optionalHouse = houseRepository.findById(houseId);
         return optionalHouse.orElse(null);
     }
-
 }
