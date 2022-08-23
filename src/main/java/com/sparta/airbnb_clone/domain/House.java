@@ -40,7 +40,7 @@ public class House extends Timestamped {
     private String latitude;
 
     @Column(nullable = false)
-    private double starAvg;
+    private Double starAvg;
 
     @Column(nullable = false)
     private String descript;
@@ -65,7 +65,7 @@ public class House extends Timestamped {
     private List<HouseImg> imgs;
 
 
-    public void updateStarAvg(double starAvg) {
+    public void updateStarAvg(Double starAvg) {
         this.starAvg = starAvg;
     }
 
