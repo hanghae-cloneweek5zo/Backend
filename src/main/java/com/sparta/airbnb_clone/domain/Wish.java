@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name = "wish")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Wish {
+public class Wish extends Timestamped{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +24,13 @@ public class Wish {
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Member host;
+
+    public Wish(House house, Member host){
+        this.host = host;
+        this.house = house;
+    }
+
+    public Long getResponseHouseId(Wish wish){
+        return wish.getHouse().getHouseId();
+    }
 }

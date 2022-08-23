@@ -2,8 +2,7 @@ package com.sparta.airbnb_clone.service;
 
 import com.sparta.airbnb_clone.domain.*;
 import com.sparta.airbnb_clone.dto.request.HouseRequestDto;
-import com.sparta.airbnb_clone.dto.response.HouseMainResponseDto;
-import com.sparta.airbnb_clone.dto.response.ResponseDto;
+import com.sparta.airbnb_clone.dto.response.*;
 import com.sparta.airbnb_clone.jwt.TokenProvider;
 import com.sparta.airbnb_clone.repository.*;
 import com.sparta.airbnb_clone.shared.FacilityType;
@@ -13,12 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class HouseService {
 
     private final HouseRepository houseRepository;
+    private final ReviewRepository reviewRepository;
     private final FacilityRepository facilityRepository;
     private final HouseImgRepository houseImgRepository;
     private final MemberRepository memberRepository;
@@ -41,7 +42,7 @@ public class HouseService {
                 .address(requestDto.getAddress())
                 .longitude(requestDto.getLongitude())
                 .latitude(requestDto.getLatitude())
-                .starAvg(0)
+//                .starAvg()
                 .descript(requestDto.getDescript())
                 .price(requestDto.getPrice())
                 .checkIn(requestDto.getCheckIn())
@@ -89,8 +90,9 @@ public class HouseService {
             houseMainResponseDtoList.add(
                     HouseMainResponseDto.builder()
                             .houseId(house.getHouseId())
+                            .category(house.getCategory())
                             .title(house.getTitle())
-//                            .distance()
+                            .distance(0)
                             .price(house.getPrice())
                             .starAvg(house.getStarAvg())
                             .build()
@@ -100,11 +102,88 @@ public class HouseService {
         return ResponseDto.success(houseMainResponseDtoList);
     }
 
+    @Transactional(readOnly = true)
+    public ResponseDto<?> getHouseByHouseId(Long houseId) {
+
+        House house = isPresentHouse(houseId);
+        if (null == house) {
+            return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
+        }
+
+        List<Facility> facilities = facilityRepository.findAllByHouse(house);
+        List<FacilityType> facilityTypes = new ArrayList<>();
+
+        for (Facility facility : facilities) {
+            facilityTypes.add(facility.getFacilityType());
+        }
+
+        List<HouseImg> houseImgs = houseImgRepository.findAllByHouse(house);
+        List<String> imgUrls = new ArrayList<>();
+
+        for (HouseImg houseImg : houseImgs) {
+            imgUrls.add(houseImg.getImgUrl());
+        }
+
+        List<Review> reviews = reviewRepository.findAllByHouse(house);
+        List<ReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
+
+        for (Review review : reviews) {
+            reviewResponseDtoList.add(
+                    ReviewResponseDto.builder()
+                            .reviewId(review.getReviewId())
+                            .author(review.getMember().getNickname())
+                            .profileImgUrl(review.getMember().getProfileImgUrl())
+                            .descript(review.getDescript())
+                            .star(review.getStar())
+                            .createdAt(review.getCreatedAt())
+                            .build()
+            );
+        }
+
+        return ResponseDto.success(
+                HouseDetailResponseDto.builder()
+                        .houseId(house.getHouseId())
+                        .category(house.getCategory())
+                        .host(
+                                HostResponseDto.builder()
+                                        .memberId(house.getHost().getMemberId())
+                                        .nickname(house.getHost().getNickname())
+                                        .profileImgUrl("")
+                                        .reviewCnt(reviewRepository.countByHouse(house))
+//                                        .superHost()
+                                        .createdAt(house.getCreatedAt())
+                                        .build()
+                        )
+                        .title(house.getTitle())
+                        .nation(house.getNation())
+                        .address(house.getAddress())
+                        .longitude(house.getLongitude())
+                        .latitude(house.getLatitude())
+                        .descript(house.getDescript())
+                        .starAvg(house.getStarAvg())
+                        .price(house.getPrice())
+                        .checkIn(house.getCheckIn())
+                        .checkOut(house.getCheckOut())
+                        .bedRoomCnt(house.getBedRoomCnt())
+                        .bedCnt(house.getBedCnt())
+                        .facilities(facilityTypes)
+                        .houseImgs(imgUrls)
+                        .reviews(reviewResponseDtoList)
+                        .build()
+        );
+    }
+
     @Transactional
     public Member validateMember() {
 //        if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
 //            return null;
 //        }
         return tokenProvider.getMemberFromAuthentication();
+    }
+
+    @Transactional(readOnly = true)
+    public House isPresentHouse(Long houseId) {
+        Optional<House> optionalHouse = houseRepository.findById(houseId);
+        return optionalHouse.orElse(null);
     }
 }

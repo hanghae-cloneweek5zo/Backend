@@ -4,6 +4,7 @@ import com.sparta.airbnb_clone.shared.Category;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Builder
 @Getter
@@ -39,7 +40,7 @@ public class House extends Timestamped {
     private String latitude;
 
     @Column(nullable = false)
-    private double starAvg;
+    private Double starAvg;
 
     @Column(nullable = false)
     private String descript;
@@ -58,4 +59,14 @@ public class House extends Timestamped {
 
     @Column(nullable = false)
     private int bedCnt;
+
+
+    @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HouseImg> imgs;
+
+
+    public void updateStarAvg(Double starAvg) {
+        this.starAvg = starAvg;
+    }
+
 }
