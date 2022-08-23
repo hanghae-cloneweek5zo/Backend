@@ -11,11 +11,9 @@ import java.util.Optional;
 
 public interface WishRepository extends JpaRepository<Wish, Long> {
 
-    @Query("select DISTINCT w from Wish w join fetch w.host ORDER BY w.createdAt desc")
-    List<Wish> findAllByHouse(Member member);
+    @Query("select DISTINCT w from Wish w join fetch w.member ORDER BY w.createdAt desc")
+    List<Wish> findAllByMember(Member member);
 
-//    List<Wish> findAllOrderByHouse(Long hostId);
-
-    Optional<Wish> findByHouseAndHost(House house, Member host);
+    Optional<Wish> findByHouseAndMember(House house, Member member);
 
 }

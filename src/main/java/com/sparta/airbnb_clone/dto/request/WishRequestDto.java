@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WishRequestDto {
     private Long houseId;
-    private Long hostId;
+    private Long memberId;
 }
