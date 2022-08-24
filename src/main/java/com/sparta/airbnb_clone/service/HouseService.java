@@ -99,30 +99,29 @@ public class HouseService {
 
     @Transactional(readOnly = true)
     public ResponseDto<?> getHousesByFilter(FilterRequestDto requestDto) {
-        List<House> houses = houseRepositorySupport.findAllByFilter(
+        List<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByFilter(
                 requestDto.getMinPrice(),
                 requestDto.getMaxPrice(),
                 requestDto.getBedRoomCnt(),
                 requestDto.getBedCnt(),
                 requestDto.getFacilities()
         );
-        List<HouseMainResponseDto> houseMainResponseDtoList = new ArrayList<>();
 
-        for (House house : houses) {
-            List<HouseImg> houseImgs = houseImgRepository.findAllByHouse(house);
-
-            houseMainResponseDtoList.add(
-                    HouseMainResponseDto.builder()
-                            .houseId(house.getHouseId())
-                            .category(house.getCategory())
-                            .title(house.getTitle())
-                            .nation(house.getNation())
-                            .price(house.getPrice())
-                            .starAvg(house.getStarAvg())
-                            .imgUrl(houseImgs.get(0).getImgUrl())
-                            .build()
-            );
-        }
+//        for (House house : houses) {
+//            List<HouseImg> houseImgs = houseImgRepository.findAllByHouse(house);
+//
+//            houseMainResponseDtoList.add(
+//                    HouseMainResponseDto.builder()
+//                            .houseId(house.getHouseId())
+//                            .category(house.getCategory())
+//                            .title(house.getTitle())
+//                            .nation(house.getNation())
+//                            .price(house.getPrice())
+//                            .starAvg(house.getStarAvg())
+//                            .imgUrl(houseImgs.get(0).getImgUrl())
+//                            .build()
+//            );
+//        }
 
         return ResponseDto.success(houseMainResponseDtoList);
     }
