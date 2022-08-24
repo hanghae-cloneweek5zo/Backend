@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.sparta.airbnb_clone.domain.QFacility.facility;
 import static com.sparta.airbnb_clone.domain.QHouse.house;
+import static com.sparta.airbnb_clone.domain.QHouseImg.houseImg;
 
 @Repository
 public class HouseRepositorySupport extends QuerydslRepositorySupport {
@@ -32,10 +33,12 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                         house.title,
                         house.nation,
                         house.price,
-                        house.starAvg
-//                          house.imgUrl
+                        house.starAvg,
+                        houseImg.imgUrl
                 ))
                 .from(house)
+                .leftJoin(houseImg)
+                .on(house.houseId.eq(houseImg.HouseImgId))
                 .where(house.category.eq(category))
                 .fetch();
     }
@@ -48,19 +51,33 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                         house.title,
                         house.nation,
                         house.price,
-                        house.starAvg
-//                          house.imgUrl
+                        house.starAvg,
+                        houseImg.imgUrl
                 ))
                 .from(house)
+                .leftJoin(houseImg)
+                .on(house.houseId.eq(houseImg.HouseImgId))
                 .fetch();
     }
-    public List<House> findAllByFilter(int minPrice, int maxPrice,
-                                       int bedRoomCnt, int bedCnt, List<FacilityType> facilities){
+    public List<HouseMainResponseDto> findAllByFilter(int minPrice, int maxPrice,
+                                                      int bedRoomCnt, int bedCnt, List<FacilityType> facilities){
 
         return queryFactory
-                .selectFrom(house)
+                .select(Projections.fields(
+                        HouseMainResponseDto.class,
+                        house.houseId,
+                        house.category,
+                        house.title,
+                        house.nation,
+                        house.price,
+                        house.starAvg,
+                        houseImg.imgUrl
+                ))
+                .from(house)
                 .leftJoin(facility)
                 .on(house.houseId.eq(facility.house.houseId))
+                .leftJoin(houseImg)
+                .on(house.houseId.eq(houseImg.house.houseId))
                 .where(betweenPrice(minPrice, maxPrice),
                         eqBedRoomCnt(bedRoomCnt),
                         eqBedCnt(bedCnt),
