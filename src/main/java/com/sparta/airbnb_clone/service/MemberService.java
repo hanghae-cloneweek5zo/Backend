@@ -93,7 +93,7 @@ public class MemberService {
     TokenDto tokenDto = tokenProvider.generateTokenDto(member);
     tokenToHeaders(tokenDto, response);
 
-    List<Wish> wishes = wishRepository.findAllByMember(member);
+    List<Wish> wishes = wishRepository.findAllByMember(member.getMemberId());
     List<WishResponseDto> wishResponseDtoList = new ArrayList<>();
 
     for (Wish wish : wishes) {
