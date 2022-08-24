@@ -23,10 +23,10 @@ public class Wish extends Timestamped{
 
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member host;
+    private Member member;
 
-    public Wish(House house, Member host){
-        this.host = host;
+    public Wish(House house, Member member){
+        this.member = member;
         this.house = house;
     }
 

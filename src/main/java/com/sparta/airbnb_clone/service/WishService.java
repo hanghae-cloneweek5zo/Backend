@@ -66,7 +66,7 @@ public class WishService {
         if (null == member) {
             return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
         }
-        List<Wish> wishList = wishRepository.findAllByHouse(member);
+        List<Wish> wishList = wishRepository.findAllByMember(member);
         List<House> houseList;
         ArrayList<HouseMainResponseDto> wishResponseDtoArrayList = new ArrayList<>();
         for (Wish temp : wishList) {
@@ -107,8 +107,8 @@ public class WishService {
     }
 
     @Transactional(readOnly = true)
-    public Wish isPresentWishByHouse(House house, Member host) {
-        Optional<Wish> optionalWish = wishRepository.findByHouseAndHost(house, host);
+    public Wish isPresentWishByHouse(House house, Member member) {
+        Optional<Wish> optionalWish = wishRepository.findByHouseAndMember(house, member);
         return optionalWish.orElse(null);
     }
 }

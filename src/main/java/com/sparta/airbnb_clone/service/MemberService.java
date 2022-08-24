@@ -3,18 +3,19 @@ package com.sparta.airbnb_clone.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.airbnb_clone.domain.House;
-import com.sparta.airbnb_clone.domain.Member;
-import com.sparta.airbnb_clone.domain.UserDetailsImpl;
+import com.sparta.airbnb_clone.domain.*;
 import com.sparta.airbnb_clone.dto.request.KakaoUserInfoDto;
 import com.sparta.airbnb_clone.dto.request.LoginRequestDto;
 import com.sparta.airbnb_clone.dto.request.MemberRequestDto;
 import com.sparta.airbnb_clone.dto.request.TokenDto;
 import com.sparta.airbnb_clone.dto.response.MemberResponseDto;
 import com.sparta.airbnb_clone.dto.response.ResponseDto;
+import com.sparta.airbnb_clone.dto.response.ReviewResponseDto;
+import com.sparta.airbnb_clone.dto.response.WishResponseDto;
 import com.sparta.airbnb_clone.jwt.TokenProvider;
 import com.sparta.airbnb_clone.repository.HouseRepository;
 import com.sparta.airbnb_clone.repository.MemberRepository;
+import com.sparta.airbnb_clone.repository.WishRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +34,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -43,6 +45,7 @@ public class MemberService {
 
   private final MemberRepository memberRepository;
   private final HouseRepository houseRepository;
+  private final WishRepository wishRepository;
 
   private final PasswordEncoder passwordEncoder;
 
@@ -90,11 +93,23 @@ public class MemberService {
     TokenDto tokenDto = tokenProvider.generateTokenDto(member);
     tokenToHeaders(tokenDto, response);
 
+    List<Wish> wishes = wishRepository.findAllByMember(member);
+    List<WishResponseDto> wishResponseDtoList = new ArrayList<>();
+
+    for (Wish wish : wishes) {
+      wishResponseDtoList.add(
+              WishResponseDto.builder()
+                      .houseId(wish.getHouse().getHouseId())
+                      .build()
+      );
+    }
+
     return ResponseDto.success(
             MemberResponseDto.builder()
                     .nickname(member.getNickname())
                     .createdAt(member.getCreatedAt())
                     .msg("로그인 성공")
+                    .wishes(wishResponseDtoList)
                     .build()
     );
   }
