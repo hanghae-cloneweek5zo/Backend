@@ -140,7 +140,7 @@ public class HouseService {
                 requestDto.getMaxPrice(),
                 requestDto.getBedRoomCnt(),
                 requestDto.getBedCnt(),
-                requestDto.getFacilityTypes()
+                requestDto.getFacilities()
         );
         List<HouseMainResponseDto> houseMainResponseDtoList = new ArrayList<>();
 

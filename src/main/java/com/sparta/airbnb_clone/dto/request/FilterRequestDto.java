@@ -15,5 +15,5 @@ public class FilterRequestDto {
     private int maxPrice;
     private int bedRoomCnt;
     private int bedCnt;
-    private List<FacilityType> facilityTypes;
+    private List<FacilityType> facilities;
 }
