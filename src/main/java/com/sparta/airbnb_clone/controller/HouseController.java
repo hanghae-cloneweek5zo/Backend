@@ -8,6 +8,8 @@ import com.sparta.airbnb_clone.shared.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
+
 @RestController
 @RequiredArgsConstructor
 public class HouseController {
