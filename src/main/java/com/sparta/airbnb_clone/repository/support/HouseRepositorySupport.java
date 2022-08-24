@@ -1,13 +1,14 @@
 package com.sparta.airbnb_clone.repository.support;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sparta.airbnb_clone.domain.House;
+import com.sparta.airbnb_clone.dto.response.HouseMainResponseDto;
 import com.sparta.airbnb_clone.shared.Category;
 import com.sparta.airbnb_clone.shared.FacilityType;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 import static com.sparta.airbnb_clone.domain.QFacility.facility;
@@ -22,13 +23,37 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
         this.queryFactory = queryFactory;
     }
 
-    public List<House> findAllByCategory(Category category) {
+    public List<HouseMainResponseDto> findAllByCategory(Category category) {
         return queryFactory
-                .selectFrom(house)
+                .select(Projections.fields(
+                        HouseMainResponseDto.class,
+                        house.houseId,
+                        house.category,
+                        house.title,
+                        house.nation,
+                        house.price,
+                        house.starAvg
+//                          house.imgUrl
+                ))
+                .from(house)
                 .where(house.category.eq(category))
                 .fetch();
     }
-
+    public List<HouseMainResponseDto> findAllByOrderByModifiedAtDesc(){
+        return queryFactory
+                .select(Projections.fields(
+                        HouseMainResponseDto.class,
+                        house.houseId,
+                        house.category,
+                        house.title,
+                        house.nation,
+                        house.price,
+                        house.starAvg
+//                          house.imgUrl
+                ))
+                .from(house)
+                .fetch();
+    }
     public List<House> findAllByFilter(int minPrice, int maxPrice,
                                        int bedRoomCnt, int bedCnt, List<FacilityType> facilities){
 
@@ -41,8 +66,8 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                         eqBedCnt(bedCnt),
                         eqFacilities(facilities))
                 .orderBy(house.createdAt.desc())
-//                .offset(pageIndex * pageSize)
-//                .limit(pageSize)
+//                .offset(pageable.getOffset())
+//                .limit(pageable.getPagesize)
                 .fetch();
     }
 
