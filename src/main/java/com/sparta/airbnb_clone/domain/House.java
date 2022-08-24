@@ -34,10 +34,10 @@ public class House extends Timestamped {
     private String address;
 
     @Column(nullable = false)
-    private String longitude;
+    private String latitude;
 
     @Column(nullable = false)
-    private String latitude;
+    private String longitude;
 
     @Column(nullable = false)
     private Double starAvg;
