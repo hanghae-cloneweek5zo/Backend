@@ -8,6 +8,7 @@ import com.sparta.airbnb_clone.shared.FacilityType;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 import static com.sparta.airbnb_clone.domain.QFacility.facility;
@@ -41,8 +42,8 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                         eqBedCnt(bedCnt),
                         eqFacilities(facilities))
                 .orderBy(house.createdAt.desc())
-//                .offset(pageIndex * pageSize)
-//                .limit(pageSize)
+//                .offset(pageable.getOffset())
+//                .limit(pageable.getPagesize)
                 .fetch();
     }
 
