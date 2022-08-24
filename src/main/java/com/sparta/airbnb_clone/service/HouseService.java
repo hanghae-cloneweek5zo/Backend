@@ -1,6 +1,7 @@
 package com.sparta.airbnb_clone.service;
 
 import com.sparta.airbnb_clone.domain.*;
+import com.sparta.airbnb_clone.dto.request.FilterRequestDto;
 import com.sparta.airbnb_clone.dto.request.HouseRequestDto;
 import com.sparta.airbnb_clone.dto.response.*;
 import com.sparta.airbnb_clone.jwt.TokenProvider;
@@ -133,6 +134,36 @@ public class HouseService {
     }
 
     @Transactional(readOnly = true)
+    public ResponseDto<?> getHousesByFilter(FilterRequestDto requestDto) {
+        List<House> houses = houseRepositorySupport.findAllByFilter(
+                requestDto.getMinPrice(),
+                requestDto.getMaxPrice(),
+                requestDto.getBedRoomCnt(),
+                requestDto.getBedCnt(),
+                requestDto.getFacilityTypes()
+        );
+        List<HouseMainResponseDto> houseMainResponseDtoList = new ArrayList<>();
+
+        for (House house : houses) {
+            List<HouseImg> houseImgs = houseImgRepository.findAllByHouse(house);
+
+            houseMainResponseDtoList.add(
+                    HouseMainResponseDto.builder()
+                            .houseId(house.getHouseId())
+                            .category(house.getCategory())
+                            .title(house.getTitle())
+                            .nation(house.getNation())
+                            .price(house.getPrice())
+                            .starAvg(house.getStarAvg())
+                            .imgUrl(houseImgs.get(0).getImgUrl())
+                            .build()
+            );
+        }
+
+        return ResponseDto.success(houseMainResponseDtoList);
+    }
+
+    @Transactional(readOnly = true)
     public ResponseDto<?> getHouseByHouseId(Long houseId) {
 
         House house = isPresentHouse(houseId);
@@ -187,8 +218,8 @@ public class HouseService {
                         .title(house.getTitle())
                         .nation(house.getNation())
                         .address(house.getAddress())
-                        .longitude(house.getLongitude())
                         .latitude(house.getLatitude())
+                        .longitude(house.getLongitude())
                         .descript(house.getDescript())
                         .starAvg(house.getStarAvg())
                         .price(house.getPrice())
@@ -201,11 +232,6 @@ public class HouseService {
                         .reviews(reviewResponseDtoList)
                         .build()
         );
-    }
-
-    @Transactional
-    public Member validateMember() {
-        return tokenProvider.getMemberFromAuthentication();
     }
 
     @Transactional(readOnly = true)

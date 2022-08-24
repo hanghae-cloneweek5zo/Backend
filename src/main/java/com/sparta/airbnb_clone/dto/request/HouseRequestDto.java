@@ -17,8 +17,8 @@ public class HouseRequestDto {
     private String title;
     private String nation;
     private String address;
-    private String longitude;
     private String latitude;
+    private String longitude;
     private String descript;
     private int price;
     private String checkIn;
