@@ -66,7 +66,7 @@ public class WishService {
         if (null == member) {
             return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
         }
-        List<Wish> wishList = wishRepository.findAllByMember(member);
+        List<Wish> wishList = wishRepository.findAllByMember(member.getMemberId());
         List<House> houseList;
         ArrayList<HouseMainResponseDto> wishResponseDtoArrayList = new ArrayList<>();
         for (Wish temp : wishList) {
