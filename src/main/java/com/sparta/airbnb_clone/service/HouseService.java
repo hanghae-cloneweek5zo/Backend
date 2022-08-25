@@ -89,28 +89,27 @@ public class HouseService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseDto<?> getAllHouses(Pageable pageable) {
-        PageImpl<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByOrderByModifiedAtDesc(pageable);
+    public ResponseDto<?> getAllHouses() {
+        List<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByOrderByModifiedAtDesc();
         return ResponseDto.success(houseMainResponseDtoList);
     }
 
     @Transactional(readOnly = true)
-    public ResponseDto<?> getAllHousesByCategory(Category category,Pageable pageable) {
-        PageImpl<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByCategory(category,pageable);
+    public ResponseDto<?> getAllHousesByCategory(Category category) {
+        List<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByCategory(category);
         return ResponseDto.success(houseMainResponseDtoList);
     }
 
     @Transactional(readOnly = true)
-    public ResponseDto<?> getHousesByFilter(FilterRequestDto requestDto, Pageable pageable) {
+    public ResponseDto<?> getHousesByFilter(FilterRequestDto requestDto) {
 
 
-        PageImpl<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByFilter(
+        List<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByFilter(
                 requestDto.getMinPrice(),
                 requestDto.getMaxPrice(),
                 requestDto.getBedRoomCnt(),
                 requestDto.getBedCnt(),
-                requestDto.getFacilities(),
-                pageable
+                requestDto.getFacilities()
         );
 
         return ResponseDto.success(houseMainResponseDtoList);

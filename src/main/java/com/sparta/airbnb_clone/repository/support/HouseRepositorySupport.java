@@ -32,8 +32,8 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
     }
 
     //카테고리 별 조회
-    public PageImpl<HouseMainResponseDto> findAllByCategory(Category category,Pageable pageable) {
-        List<HouseMainResponseDto> content = queryFactory
+    public List<HouseMainResponseDto> findAllByCategory(Category category) {
+        return queryFactory
                 .select(Projections.fields(
                         HouseMainResponseDto.class,
                         house.houseId,
@@ -48,16 +48,12 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                 .leftJoin(houseImg)
                 .on(house.houseId.eq(houseImg.HouseImgId))
                 .where(house.category.eq(category))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .fetch();
-
-        return new PageImpl<>(content,pageable,content.size());
     }
 
     //전체 조회
-    public PageImpl<HouseMainResponseDto> findAllByOrderByModifiedAtDesc(Pageable pageable) {
-        List<HouseMainResponseDto> content = queryFactory
+    public List<HouseMainResponseDto> findAllByOrderByModifiedAtDesc() {
+        return queryFactory
                 .select(Projections.fields(
                         HouseMainResponseDto.class,
                         house.houseId,
@@ -71,16 +67,14 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                 .from(house)
                 .leftJoin(houseImg)
                 .on(house.houseId.eq(houseImg.HouseImgId))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .fetch();
-        return new PageImpl<>(content,pageable,content.size());
+
     }
 
-    public PageImpl<HouseMainResponseDto> findAllByFilter(int minPrice, int maxPrice,
-                                                      int bedRoomCnt, int bedCnt, List<FacilityType> facilities, Pageable pageable) {
+    public List<HouseMainResponseDto> findAllByFilter(int minPrice, int maxPrice,
+                                                      int bedRoomCnt, int bedCnt, List<FacilityType> facilities) {
 
-        List<HouseMainResponseDto> content = queryFactory
+        return queryFactory
                 .select(Projections.fields(
                         HouseMainResponseDto.class,
                         house.houseId,
@@ -102,11 +96,9 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                         eqFacilities(facilities))
                 .groupBy(house.houseId)
                 .orderBy(house.houseId.asc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .fetch();
 
-        return new PageImpl<>(content,pageable,content.size());
+
     }
 
     private BooleanExpression betweenPrice(int minPrice, int maxPrice) {

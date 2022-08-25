@@ -22,23 +22,19 @@ public class HouseController {
         return houseService.createHouse(requestDto);
     }
 
-    @GetMapping({"/houses/categories/{category}/{pageNum}"})
-    public ResponseDto<?> getAllHousesByCategory(@PathVariable Category category,@PathVariable int pageNum) {
-        Pageable pageable = pageRequest.of(pageNum,20);
-        return houseService.getAllHousesByCategory(category,pageable);
+    @GetMapping({"/houses/categories/{category}"})
+    public ResponseDto<?> getAllHousesByCategory(@PathVariable Category category) {
+        return houseService.getAllHousesByCategory(category);
     }
 
-    @GetMapping("/houses/categories/{pageNum}")
-    public ResponseDto<?> getAllHouses(@PathVariable int pageNum) {
-        Pageable pageable = pageRequest.of(pageNum,20);
-        return houseService.getAllHouses(pageable);
+    @GetMapping("/houses/categories")
+    public ResponseDto<?> getAllHouses() {
+        return houseService.getAllHouses();
     }
 
-
-    @PostMapping("/houses/filter/{pageNum}")
-    public ResponseDto<?> getAllHousesByFilter(@RequestBody FilterRequestDto requestDto, @PathVariable int pageNum) {
-        Pageable pageable = pageRequest.of(pageNum, 20);
-        return houseService.getHousesByFilter(requestDto, pageable);
+    @PostMapping("/houses/filter")
+    public ResponseDto<?> getAllHousesByFilter(@RequestBody FilterRequestDto requestDto) {
+        return houseService.getHousesByFilter(requestDto);
     }
 
     @GetMapping("/houses/{houseId}")
