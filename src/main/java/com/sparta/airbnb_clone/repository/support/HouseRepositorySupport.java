@@ -94,8 +94,7 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                         eqBedRoomCnt(bedRoomCnt),
                         eqBedCnt(bedCnt),
                         eqFacilities(facilities))
-                .groupBy(house.houseId)
-                .orderBy(house.houseId.asc())
+                .orderBy(house.houseId.desc())
                 .fetch();
 
 
