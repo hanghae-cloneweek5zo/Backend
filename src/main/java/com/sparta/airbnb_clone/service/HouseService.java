@@ -89,14 +89,14 @@ public class HouseService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseDto<?> getAllHouses() {
-        List<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByOrderByModifiedAtDesc();
+    public ResponseDto<?> getAllHouses(Pageable pageable) {
+        PageImpl<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByOrderByModifiedAtDesc(pageable);
         return ResponseDto.success(houseMainResponseDtoList);
     }
 
     @Transactional(readOnly = true)
-    public ResponseDto<?> getAllHousesByCategory(Category category) {
-        List<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByCategory(category);
+    public ResponseDto<?> getAllHousesByCategory(Category category,Pageable pageable) {
+        PageImpl<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByCategory(category,pageable);
         return ResponseDto.success(houseMainResponseDtoList);
     }
 
@@ -112,22 +112,6 @@ public class HouseService {
                 requestDto.getFacilities(),
                 pageable
         );
-
-//        for (House house : houses) {
-//            List<HouseImg> houseImgs = houseImgRepository.findAllByHouse(house);
-//
-//            houseMainResponseDtoList.add(
-//                    HouseMainResponseDto.builder()
-//                            .houseId(house.getHouseId())
-//                            .category(house.getCategory())
-//                            .title(house.getTitle())
-//                            .nation(house.getNation())
-//                            .price(house.getPrice())
-//                            .starAvg(house.getStarAvg())
-//                            .imgUrl(houseImgs.get(0).getImgUrl())
-//                            .build()
-//            );
-//        }
 
         return ResponseDto.success(houseMainResponseDtoList);
     }

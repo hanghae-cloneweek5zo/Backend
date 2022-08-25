@@ -8,7 +8,6 @@ import com.sparta.airbnb_clone.service.HouseService;
 import com.sparta.airbnb_clone.shared.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,16 +22,22 @@ public class HouseController {
         return houseService.createHouse(requestDto);
     }
 
-    @GetMapping({"/houses/categories", "/houses/categories/{category}"})
-    public ResponseDto<?> getAllHousesByCategory(@PathVariable(required = false) Category category) {
-        return category == null ?
-                houseService.getAllHouses() :
-                houseService.getAllHousesByCategory(category);
+    @GetMapping({"/houses/categories/{category}/{pageNum}"})
+    public ResponseDto<?> getAllHousesByCategory(@PathVariable Category category,@PathVariable int pageNum) {
+        Pageable pageable = pageRequest.of(pageNum,20);
+        return houseService.getAllHousesByCategory(category,pageable);
     }
 
-    @PostMapping("/houses/filter/{pageNum}")
-    public ResponseDto<?> getAllHousesByFilter(@RequestBody FilterRequestDto requestDto,@PathVariable int pageNum) {
+    @GetMapping("/houses/categories/{pageNum}")
+    public ResponseDto<?> getAllHouses(@PathVariable int pageNum) {
         Pageable pageable = pageRequest.of(pageNum,20);
+        return houseService.getAllHouses(pageable);
+    }
+
+
+    @PostMapping("/houses/filter/{pageNum}")
+    public ResponseDto<?> getAllHousesByFilter(@RequestBody FilterRequestDto requestDto, @PathVariable int pageNum) {
+        Pageable pageable = pageRequest.of(pageNum, 20);
         return houseService.getHousesByFilter(requestDto, pageable);
     }
 
