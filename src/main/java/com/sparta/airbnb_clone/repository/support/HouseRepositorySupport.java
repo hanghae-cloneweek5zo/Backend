@@ -46,8 +46,9 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                 ))
                 .from(house)
                 .leftJoin(houseImg)
-                .on(house.houseId.eq(houseImg.HouseImgId))
+                .on(house.houseId.eq(houseImg.house.houseId))
                 .where(house.category.eq(category))
+                .groupBy(house.houseId)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -70,7 +71,8 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                 ))
                 .from(house)
                 .leftJoin(houseImg)
-                .on(house.houseId.eq(houseImg.HouseImgId))
+                .on(house.houseId.eq(houseImg.house.houseId))
+                .groupBy(house.houseId)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
