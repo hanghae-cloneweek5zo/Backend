@@ -20,7 +20,10 @@ public class Member extends Timestamped {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Long memberId;
+
+  @Column(nullable = false)
+  private String email;
 
   @Column(nullable = false)
   private String nickname;
@@ -28,6 +31,18 @@ public class Member extends Timestamped {
   @Column(nullable = false)
   @JsonIgnore
   private String password;
+
+  @Column(unique = true)
+  private Long kakaoId;
+
+  @Column
+  private String profileImgUrl;
+
+  @Column
+  private Double point;
+
+  @Column
+  private Boolean isSuperHost;
 
   @Override
   public boolean equals(Object o) {
@@ -38,7 +53,7 @@ public class Member extends Timestamped {
       return false;
     }
     Member member = (Member) o;
-    return id != null && Objects.equals(id, member.id);
+    return memberId != null && Objects.equals(member, member.memberId);
   }
 
   @Override
@@ -48,5 +63,17 @@ public class Member extends Timestamped {
 
   public boolean validatePassword(PasswordEncoder passwordEncoder, String password) {
     return passwordEncoder.matches(password, this.password);
+  }
+
+  public Member(String nickname, String password, String email, Long kakaoId) {
+    this.nickname = nickname;
+    this.password = password;
+    this.email = email;
+    this.kakaoId = kakaoId;
+    this.isSuperHost = point >= 4.5 ? true : false;
+  }
+
+  public void updatePoint(Double point) {
+    this.point = point;
   }
 }

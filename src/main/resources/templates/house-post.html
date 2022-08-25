@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+
+        const postHouseData = () => {
+            const memberId = document.querySelector("#memberId").value;
+            const title = document.querySelector("#title").value;
+            const nation = document.querySelector("#nation").value;
+            const address = document.querySelector("#address").value;
+            const longitude = document.querySelector("#longitude").value;
+            const latitude = document.querySelector("#latitude").value;
+            const descript = document.querySelector("#descript").value;
+            const price = document.querySelector("#price").value;
+            const checkIn = document.querySelector("#checkIn").value;
+            const checkOut = document.querySelector("#checkOut").value;
+            const bedRoomCnt = document.querySelector("#bedRoomCnt").value;
+            const bedCnt = document.querySelector("#bedCnt").value;
+            const category = document.querySelector("#category").value;
+
+            const facilities = [];
+            const imgUrls = [];
+            const facilityChecks = document.querySelectorAll("#facilities input[type='checkbox']");
+            const imgUrlInputs = document.querySelectorAll("#imgUrls input[type='text']");
+
+            facilityChecks.forEach(item => {
+                addIntoArrIsChecked(facilities, item);
+            });
+
+            imgUrlInputs.forEach(item => {
+                addIntoArrIsNotNull(imgUrls, item);
+            });
+
+            const data = {
+                "memberId": parseInt(memberId),
+                "category": category,
+                "title": title,
+                "nation": nation,
+                "address": address,
+                "longitude": longitude,
+                "latitude": latitude,
+                "descript": descript,
+                "price": parseInt(price),
+                "checkIn": checkIn,
+                "checkOut": checkOut,
+                "bedRoomCnt": parseInt(bedRoomCnt),
+                "bedCnt": parseInt(bedCnt),
+                "imgUrls": imgUrls,
+                "facilities": facilities
+            };
+
+            console.log(data);
+
+            $.ajax({
+                url:"/houses",
+                type: "POST",
+                contentType : "application/json",
+                data: JSON.stringify(data),
+                success: (response) => {
+                    alert(response["data"]);
+                    window.location.reload();
+                },
+                error: (err) => {
+                    alert(err);
+                }
+            });
+        }
+
+        const addIntoArrIsChecked = (arr, item) => {
+            if (item.checked) arr.push(item.value);
+        }
+
+        const addIntoArrIsNotNull = (arr, item) => {
+            if (item.value !== "") arr.push(item.value);
+        }
+
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        label {
+            display: block;
+            line-height: 1;
+        }
+        input[type="text"],
+        select {
+            width: 100%;
+            height: 45px;
+            font-size: 18px;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 45%;
+            margin: 50px auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .form-wrap,
+        .input-wrap,
+        .input-inner {
+            width: 100%;
+        }
+        .label-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .label-wrap {
+            margin-bottom: 15px;
+        }
+        .label-wrap > label {
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .input-wrap:not(:last-of-type) {
+            margin-bottom: 40px;
+        }
+
+        .input-wrap.multiple .input-inner:not(:last-of-type) {
+            margin-bottom: 10px;
+        }
+
+        .input-wrap.check .btn.check-all {
+            width: 100px;
+            height: 30px;
+            color: #fff;
+            background: #6d6d6d;
+            border: none;
+            border-radius: 5px;
+        }
+        .input-wrap.check .btn.check-all:hover {
+            cursor: pointer;
+        }
+        .input-wrap.check .btn.check-all.active {
+            background: #000;
+        }
+        .input-wrap.check .check-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .input-wrap.check .input-inner {
+            display: flex;
+            align-items: center;
+            width: 33.3333%;
+            padding: 15px 0;
+        }
+        .input-wrap.check .input-inner input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+        }
+        .input-wrap.check .input-inner > *:hover {
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            position: relative;
+            width: 100%;
+            height: 65px;
+            font-size: 25px;
+            color: #fff;
+            background: #6d6d6d;
+            margin-top: 30px;
+            border: none;
+            border-radius: 5px;
+        }
+        .submit-btn:hover {
+            cursor: pointer;
+            background: #000;
+        }
+        .submit-btn::before {
+            content: "저장";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .submit-btn:hover::before {
+            content: "We can do it!";
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>숙소 정보 입력</h1>
+        <div class="form-wrap">
+            <div class="input-wrap select">
+                <div class="label-wrap">
+                    <label>memberId (회원 ID)</label>
+                </div>
+                <select name="memberId" id="memberId" class="select-box">
+                    <option value="">----- 선택 (host) -----</option>
+                    <option value="1">host1</option>
+                    <option value="2">host2</option>
+                    <option value="3">host3</option>
+                </select>
+            </div>
+            <div class="input-wrap select">
+                <div class="label-wrap">
+                    <label>category (카테고리)</label>
+                </div>
+                <select name="category" id="category" class="select-box">
+                    <option value="">----- 선택 (value) -----</option>
+                    <option value="FANCY">기상천외한 숙소 (FANCY)</option>
+                    <option value="NATIONAL_PARK">국립공원 (NATIONAL_PARK)</option>
+                    <option value="SHACK">통나무집 (SHACK)</option>
+                    <option value="ISLE">섬 (ISLE)</option>
+                    <option value="OCEAN">해변 근처 (OCEAN)</option>
+                    <option value="COMPACT">초소형 주택 (COMPACT)</option>
+                    <option value="DESIGNED">디자인 (DESIGNED)</option>
+                    <option value="CAMPSITE">캠핑장 (CAMPSITE)</option>
+                    <option value="A_SHAPED">A자형 주택 (A_SHAPED)</option>
+                    <option value="LAKE">호숫가 (LAKE)</option>
+                    <option value="ARCTIC">북극 (ARCTIC)</option>
+                </select>
+            </div>
+            <div class="input-wrap">
+                <div class="label-wrap">
+                    <label for="title">title (타이틀)</label>
+                </div>
+                <div class="input-inner">
+                    <input type="text" id="title" />
+                </div>
+            </div>
+            <div class="input-wrap">
+                <div class="label-wrap">
+                    <label for="nation">nation (국가)</label>
+                </div>
+                <div class="input-inner">
+                    <input type="text" id="nation" />
+                </div>
+            </div>
+            <div class="input-wrap">
+                <div class="label-wrap">
+                    <label for="address">address (주소)</label>
+                </div>
+                <div class="input-inner">
+                    <input type="text" id="address" />
+                </div>
+            </div>
+            <div class="input-wrap">
+                <div class="label-wrap">
+                    <label for="longitude">longitude (경도)</label>
+                </div>
+                <div class="input-inner">
+                    <input type="text" id="longitude" />
+                </div>
+            </div>
+            <div class="input-wrap">
+                <div class="label-wrap">
+                    <label for="latitude">latitude (위도)</label>
+                </div>
+                <div class="input-inner">
+                    <input type="text" id="latitude" />
+                </div>
+            </div>
+            <div class="input-wrap">
+                <div class="label-wrap">
+                    <label for="descript">descript (설명)</label>
+                </div>
+                <div class="input-inner">
+                    <input type="text" id="descript" />
+                </div>
+            </div>
+            <div class="input-wrap">
+                <div class="label-wrap">
+                    <label for="price">price (가격)</label>
+                </div>
+                <div class="input-inner">
+                    <input type="text" id="price" />
+                </div>
+            </div>
+            <div class="input-wrap">
+                <div class="label-wrap">
+                    <label for="checkIn">checkIn (체크인 시간)</label>
+                </div>
+                <div class="input-inner">
+                    <input type="text" id="checkIn" />
+                </div>
+            </div>
+            <div class="input-wrap">
+                <div class="label-wrap">
+                    <label for="checkOut">checkOut (체크아웃 시간)</label>
+                </div>
+                <div class="input-inner">
+                    <input type="text" id="checkOut" />
+                </div>
+            </div>
+            <div class="input-wrap">
+                <div class="label-wrap">
+                    <label for="bedRoomCnt">bedRoomCnt (침실 개수)</label>
+                </div>
+                <div class="input-inner">
+                    <input type="text" id="bedRoomCnt" />
+                </div>
+            </div>
+            <div class="input-wrap">
+                <div class="label-wrap">
+                    <label for="bedCnt">bedCnt (침대 개수)</label>
+                </div>
+                <div class="input-inner">
+                    <input type="text" id="bedCnt" />
+                </div>
+            </div>
+            <div class="input-wrap multiple">
+                <div class="label-wrap">
+                    <label for="imgUrl1">imgUrl (숙소 이미지)</label>
+                </div>
+                <div id="imgUrls" class="multi-input-wrap">
+                    <div class="input-inner">
+                        <input type="text" id="imgUrl0" placeholder="img1" />
+                    </div>
+                    <div class="input-inner">
+                        <input type="text" id="imgUrl1" placeholder="img2" />
+                    </div>
+                    <div class="input-inner">
+                        <input type="text" id="imgUrl2" placeholder="img3" />
+                    </div>
+                    <div class="input-inner">
+                        <input type="text" id="imgUrl3" placeholder="img4" />
+                    </div>
+                    <div class="input-inner">
+                        <input type="text" id="imgUrl4" placeholder="img5" />
+                    </div>
+                </div>
+            </div>
+            <div class="input-wrap check">
+                <div class="label-wrap">
+                    <label>facility (편의 시설)</label>
+                </div>
+                <div id="facilities" class="check-wrap">
+                    <div class="input-inner">
+                        <input type="checkbox" name="facility" id="facility0" value="KITCHEN" />
+                        <label for="facility0">주방</label>
+                    </div>
+                    <div class="input-inner">
+                        <input type="checkbox" name="facility" id="facility1" value="WIFI" />
+                        <label for="facility1">무선인터넷</label>
+                    </div>
+                    <div class="input-inner">
+                        <input type="checkbox" name="facility" id="facility2" value="BUSINESS_SITE" />
+                        <label for="facility2">업무 전용공간</label>
+                    </div>
+                    <div class="input-inner">
+                        <input type="checkbox" name="facility" id="facility3" value="PARKING" />
+                        <label for="facility3">건물 내 무료주차</label>
+                    </div>
+                    <div class="input-inner">
+                        <input type="checkbox" name="facility" id="facility4" value="SWIMMING" />
+                        <label for="facility4">전용 수영장</label>
+                    </div>
+                    <div class="input-inner">
+                        <input type="checkbox" name="facility" id="facility5" value="AIR_CONDITIONAL" />
+                        <label for="facility5">에어컨</label>
+                    </div>
+                    <div class="input-inner">
+                        <input type="checkbox" name="facility" id="facility6" value="BALCONY" />
+                        <label for="facility6">전용 파티오 또는 발코니</label>
+                    </div>
+                    <div class="input-inner">
+                        <input type="checkbox" name="facility" id="facility7" value="BACKYARD" />
+                        <label for="facility7">뒷마당</label>
+                    </div>
+                    <div class="input-inner">
+                        <input type="checkbox" name="facility" id="facility8" value="CO_ALARM" />
+                        <label for="facility8">일산화탄소 경보기</label>
+                    </div>
+                    <div class="input-inner">
+                        <input type="checkbox" name="facility" id="facility9" value="FIRE_ALARM" />
+                        <label for="facility9">화재 경보기</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button
+                type="button"
+                id="submitBtn"
+                class="submit-btn"
+                onclick="postHouseData()"
+        ></button>
+    </div>
+</body>
+</html>
