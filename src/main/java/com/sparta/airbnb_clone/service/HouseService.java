@@ -10,6 +10,9 @@ import com.sparta.airbnb_clone.repository.support.HouseRepositorySupport;
 import com.sparta.airbnb_clone.shared.Category;
 import com.sparta.airbnb_clone.shared.FacilityType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,42 +89,29 @@ public class HouseService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseDto<?> getAllHouses() {
-        List<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByOrderByModifiedAtDesc();
+    public ResponseDto<?> getAllHouses(Pageable pageable) {
+        PageImpl<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByOrderByModifiedAtDesc(pageable);
         return ResponseDto.success(houseMainResponseDtoList);
     }
 
     @Transactional(readOnly = true)
-    public ResponseDto<?> getAllHousesByCategory(Category category) {
-        List<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByCategory(category);
+    public ResponseDto<?> getAllHousesByCategory(Category category,Pageable pageable) {
+        PageImpl<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByCategory(category,pageable);
         return ResponseDto.success(houseMainResponseDtoList);
     }
 
     @Transactional(readOnly = true)
-    public ResponseDto<?> getHousesByFilter(FilterRequestDto requestDto) {
-        List<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByFilter(
+    public ResponseDto<?> getHousesByFilter(FilterRequestDto requestDto, Pageable pageable) {
+
+
+        PageImpl<HouseMainResponseDto> houseMainResponseDtoList = houseRepositorySupport.findAllByFilter(
                 requestDto.getMinPrice(),
                 requestDto.getMaxPrice(),
                 requestDto.getBedRoomCnt(),
                 requestDto.getBedCnt(),
-                requestDto.getFacilities()
+                requestDto.getFacilities(),
+                pageable
         );
-
-//        for (House house : houses) {
-//            List<HouseImg> houseImgs = houseImgRepository.findAllByHouse(house);
-//
-//            houseMainResponseDtoList.add(
-//                    HouseMainResponseDto.builder()
-//                            .houseId(house.getHouseId())
-//                            .category(house.getCategory())
-//                            .title(house.getTitle())
-//                            .nation(house.getNation())
-//                            .price(house.getPrice())
-//                            .starAvg(house.getStarAvg())
-//                            .imgUrl(houseImgs.get(0).getImgUrl())
-//                            .build()
-//            );
-//        }
 
         return ResponseDto.success(houseMainResponseDtoList);
     }

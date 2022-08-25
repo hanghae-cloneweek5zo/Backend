@@ -14,8 +14,6 @@ public class CustomExceptionHandler {
         .getAllErrors()
         .get(0)
         .getDefaultMessage();
-
     return ResponseDto.fail("BAD_REQUEST", errorMessage);
   }
-
 }

@@ -10,7 +10,6 @@ import com.sparta.airbnb_clone.dto.request.MemberRequestDto;
 import com.sparta.airbnb_clone.dto.request.TokenDto;
 import com.sparta.airbnb_clone.dto.response.MemberResponseDto;
 import com.sparta.airbnb_clone.dto.response.ResponseDto;
-import com.sparta.airbnb_clone.dto.response.ReviewResponseDto;
 import com.sparta.airbnb_clone.dto.response.WishResponseDto;
 import com.sparta.airbnb_clone.jwt.TokenProvider;
 import com.sparta.airbnb_clone.repository.HouseRepository;
@@ -32,7 +31,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
