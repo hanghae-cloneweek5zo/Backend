@@ -22,7 +22,7 @@
 
 <h2><a href=https://www.notion.so/SA-5-b42691a27f1048768da8880bae9727c2>팀 노션</a></h2>
 
-## 👨‍👧‍👦 Front 구성원
+## 👨‍👧‍👦 Backend 구성원
 
 |  Name  |            Github            |        Role        |
 |:------:|:----------------------------:|:------------------:|
@@ -33,23 +33,21 @@
 
 # 주요기능 및 소개
 ### **🗺** ERD 설계
-
+![image](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/d1bd6f55-25b6-40d4-85e4-93d20ac854fc/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220825%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220825T072624Z&X-Amz-Expires=86400&X-Amz-Signature=388736f8a28dca652c080691d16357e80163a5f3e46542d4079d696aecbf44b6&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
 
 ### **🐋** 트러블 슈팅
 
 ### ***1.속도 개선<br>***
 
-![](../Desktop/스크린샷 2022-08-25 오전 1.17.19.png)
+![img.png](img.png)
 <br> 주석 처리된 builder를 사용하여 메인페이지에 해당하는 게시글을 호출 하였을때 여러번의 for문을 이용하다보니
 <br> Postman을 이용하여 검사를 했을때 17초까지 나오는 문제가 발생 하였다.
-
-<br> **여러번 호출을 하지 않고 개선 하기 위해 Querydsl 사용하여 해당하는 컬럼만 조회하는걸로 리팩토링을 통해 조회 시간을 대폭 감소시킴.
-
 ![img_1.png](img_1.png)
+<br> **여러번 호출을 하지 않고 개선 하기 위해 Querydsl 사용하여 해당하는 컬럼만 조회하는걸로 리팩토링을 통해 조회 시간을 대폭 감소시킴.
 <br> 
 
 
-### 2. Pageable 사용 시 호출 중복 문제<br>
+### 2. Pageable 호출 중복 문제<br>
  ![img_2.png](img_2.png)
    <br>
 <br> .distinct() 를 사용하여 중복 되는 값들을 해결 하려고 했지만 중복된 값들이 호출 되는 문제가 발생 함.
