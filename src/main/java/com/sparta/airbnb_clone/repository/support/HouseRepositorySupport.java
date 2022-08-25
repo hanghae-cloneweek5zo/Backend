@@ -8,6 +8,7 @@ import com.sparta.airbnb_clone.domain.House;
 import com.sparta.airbnb_clone.dto.response.HouseMainResponseDto;
 import com.sparta.airbnb_clone.shared.Category;
 import com.sparta.airbnb_clone.shared.FacilityType;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -30,8 +31,9 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
         this.queryFactory = queryFactory;
     }
 
-    public List<HouseMainResponseDto> findAllByCategory(Category category) {
-        return queryFactory
+    //카테고리 별 조회
+    public PageImpl<HouseMainResponseDto> findAllByCategory(Category category,Pageable pageable) {
+        List<HouseMainResponseDto> content = queryFactory
                 .select(Projections.fields(
                         HouseMainResponseDto.class,
                         house.houseId,
@@ -46,11 +48,16 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                 .leftJoin(houseImg)
                 .on(house.houseId.eq(houseImg.HouseImgId))
                 .where(house.category.eq(category))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
+
+        return new PageImpl<>(content,pageable,content.size());
     }
 
-    public List<HouseMainResponseDto> findAllByOrderByModifiedAtDesc() {
-        return queryFactory
+    //전체 조회
+    public PageImpl<HouseMainResponseDto> findAllByOrderByModifiedAtDesc(Pageable pageable) {
+        List<HouseMainResponseDto> content = queryFactory
                 .select(Projections.fields(
                         HouseMainResponseDto.class,
                         house.houseId,
@@ -64,7 +71,10 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                 .from(house)
                 .leftJoin(houseImg)
                 .on(house.houseId.eq(houseImg.HouseImgId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
+        return new PageImpl<>(content,pageable,content.size());
     }
 
     public PageImpl<HouseMainResponseDto> findAllByFilter(int minPrice, int maxPrice,
