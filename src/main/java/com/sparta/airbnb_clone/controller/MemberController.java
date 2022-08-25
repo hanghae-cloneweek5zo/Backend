@@ -16,11 +16,11 @@ import javax.validation.Valid;
 @RequestMapping("/members")
 public class MemberController {
 
-  private final MemberService memberService;
+    private final MemberService memberService;
 
-  @PostMapping("/isvalidate/email")
-  public boolean isvalidateEmail(@RequestBody MemberRequestDto requestDto) {
-    return memberService.isValidateEmail(requestDto);
+    @PostMapping("/isvalidate/email")
+    public boolean isvalidateEmail(@RequestBody MemberRequestDto requestDto) {
+        return memberService.isValidateEmail(requestDto);
 //            ?
 //            ResponseDto.success(
 //                    MemberResponseDto.builder()
@@ -30,24 +30,24 @@ public class MemberController {
 //            ) :
 //            ResponseDto.fail("NICKNAME_DUPLICATED", "중복되는 이메일 입니다.");
 //
-  }
+    }
 
-  @PostMapping("/isvalidate/nickname")
-  public boolean validateNickname(@RequestBody MemberRequestDto requestDto) {
-    return memberService.isValidateNickname(requestDto);
-  }
+    @PostMapping("/isvalidate/nickname")
+    public boolean validateNickname(@RequestBody MemberRequestDto requestDto) {
+        return memberService.isValidateNickname(requestDto);
+    }
 
-  @PostMapping("/signup")
-  public ResponseDto<?> signup(@RequestBody @Valid MemberRequestDto requestDto) {
-    return memberService.createMember(requestDto);
-  }
+    @PostMapping("/signup")
+    public ResponseDto<?> signup(@RequestBody @Valid MemberRequestDto requestDto) {
+        return memberService.createMember(requestDto);
+    }
 
-  @PostMapping("/login")
-  public ResponseDto<?> login(@RequestBody @Valid LoginRequestDto requestDto,
-                              HttpServletResponse response
-  ) {
-    return memberService.login(requestDto, response);
-  }
+    @PostMapping("/login")
+    public ResponseDto<?> login(@RequestBody @Valid LoginRequestDto requestDto,
+                                HttpServletResponse response
+    ) {
+        return memberService.login(requestDto, response);
+    }
 
 //  @GetMapping("/kakao/callback")
 //  public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
