@@ -46,8 +46,9 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                 ))
                 .from(house)
                 .leftJoin(houseImg)
-                .on(house.houseId.eq(houseImg.HouseImgId))
+                .on(house.houseId.eq(houseImg.house.houseId))
                 .where(house.category.eq(category))
+                .groupBy(house.houseId)
                 .fetch();
     }
 
@@ -62,11 +63,13 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                         house.nation,
                         house.price,
                         house.starAvg,
+                        houseImg.HouseImgId,
                         houseImg.imgUrl
                 ))
                 .from(house)
                 .leftJoin(houseImg)
-                .on(house.houseId.eq(houseImg.HouseImgId))
+                .on(house.houseId.eq(houseImg.house.houseId))
+                .groupBy(house.houseId)
                 .fetch();
 
     }
@@ -95,6 +98,7 @@ public class HouseRepositorySupport extends QuerydslRepositorySupport {
                         eqBedCnt(bedCnt),
                         eqFacilities(facilities))
                 .orderBy(house.houseId.desc())
+                .groupBy(house.houseId)
                 .fetch();
 
 
